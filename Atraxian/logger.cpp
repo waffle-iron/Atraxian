@@ -6,7 +6,7 @@
 
 void write_log(const std::string output)
 {
-	std::ofstream log("bobwars.log", std::ios::app);
+	std::ofstream log("environment.log", std::ios::app);
 
 	if (log.is_open())
 	{

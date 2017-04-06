@@ -8,13 +8,24 @@
 
 #include <SFML\Graphics.hpp>
 
+#include <string>
+
+namespace environment
+{
+	std::string getTimestamp();
+}
+
 class Environment
 {
 public:
-	Environment();
+	Environment(sf::VideoMode dimensions, std::string title);
 	~Environment();
+
+	sf::RenderWindow *window;
+
+	void main();
 };
 
-#define ENVIRONMENT_VERSION "0.0.1"
+#define ENVIRONMENT_VERSION "0.0.2"
 
 #endif 

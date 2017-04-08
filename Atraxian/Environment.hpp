@@ -1,5 +1,5 @@
 //----------------------------------
-// PURPOSE: Holds all code that is used across the entire application;
+// PURPOSE: Holds all code used across the entire application;
 // utilities such as getTime and other stuff that every part of the OS might need.
 //----------------------------------
 
@@ -24,8 +24,12 @@ public:
 	sf::RenderWindow *window;
 
 	void main();
+
+private:
+	sf::RectangleShape taskbar;
+	sf::RectangleShape start_button;
 };
 
-#define ENVIRONMENT_VERSION "0.0.2"
+#define ENVIRONMENT_VERSION "0.0.3"
 
 #endif 

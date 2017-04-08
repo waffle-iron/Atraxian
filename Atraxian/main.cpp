@@ -11,9 +11,9 @@ int main()
 
 	Environment *atraxia = new Environment(sf::VideoMode(1080, 720), "AtraxiaN-" ENVIRONMENT_VERSION);
 	atraxia->main();
-
 	delete atraxia;
 
 	logger::INFO("exiting...");
+	std::cin.get();
 	return 0;
 }

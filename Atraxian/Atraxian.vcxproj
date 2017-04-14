@@ -137,12 +137,14 @@
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="logger.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Pane.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Taskbar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Environment.hpp" />
     <ClInclude Include="logger.hpp" />
+    <ClInclude Include="Pane.hpp" />
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="Taskbar.hpp" />
   </ItemGroup>

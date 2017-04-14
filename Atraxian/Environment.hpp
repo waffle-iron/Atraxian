@@ -9,6 +9,7 @@
 #include <SFML\Graphics.hpp>
 
 class Taskbar;
+class Pane;
 
 namespace environment
 {
@@ -27,9 +28,9 @@ public:
 	void main();
 
 private:
-//	sf::RectangleShape taskbar;
-//	sf::RectangleShape start_button;
-//	sf::RectangleShape div;
+	sf::RectangleShape desktop_background; // this only here because things won't draw for some reason
+	std::vector<Pane*> panes;
+	Pane *selectedPane;
 };
 
 #define ENVIRONMENT_VERSION "0.0.41"

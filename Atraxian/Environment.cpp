@@ -2,6 +2,7 @@
 #include "logger.hpp"
 #include "Renderer.hpp"
 #include "Taskbar.hpp"
+#include "Pane.hpp"
 
 #include <time.h>
 
@@ -61,7 +62,7 @@ Environment::~Environment()
 	logger::INFO("Environment destroyed.");
 }
 
-bool mouseIsOver(sf::Shape &object, sf::RenderWindow &window)
+bool mouseIsOver(sf::RectangleShape &object, sf::RenderWindow &window)
 {
 	if (object.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 		return true;
@@ -76,6 +77,9 @@ void Environment::main()
 	rm.addToQueue(taskbar->bar);
 	rm.addToQueue(taskbar->start_button);
 	rm.addToQueue(taskbar->div);
+
+	desktop_background.setFillColor(sf::Color::Blue);
+	desktop_background.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
 
 	while (window->isOpen())
 	{
@@ -92,14 +96,31 @@ void Environment::main()
 			{
 				if (event.key.code == sf::Mouse::Left)
 				{
-//					logger::DEBUG("left clicked at " + std::to_string(sf::Mouse::getPosition().x) + ", " + std::to_string(sf::Mouse::getPosition().y));
+//					logger::DEBUG("left clicked at " + std::to_string(sf::Mouse::getPosition(*window).x) + ", " + std::to_string(sf::Mouse::getPosition(*window).y));
 
-					if (mouseIsOver(taskbar->start_button, *window))
+					for (size_t i = 0; i < panes.size(); i++)
 					{
-						logger::DEBUG("clicked the start button");
+						if (mouseIsOver(panes[i]->mainpane, *window))
+						{
+							selectedPane = panes[i];
+							logger::INFO("Selected Pane" + std::to_string(selectedPane->PID));
 
-						taskbar->start_button.setFillColor(sf::Color::Green);
+							break;
+						}
 					}
+
+					if (mouseIsOver(taskbar->bar, *window))
+					{
+						if (mouseIsOver(taskbar->start_button, *window))
+						{
+							logger::DEBUG("clicked the start button");
+
+							taskbar->start_button.setFillColor(sf::Color::Green);
+						}
+					}
+
+						logger::INFO("moving Pane" + std::to_string(selectedPane->PID) + " to " + std::to_string(sf::Mouse::getPosition(*window).x) + ", " + std::to_string(sf::Mouse::getPosition(*window).y));
+						selectedPane->setPosition(sf::Vector2f(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y));
 				}
 			}
 
@@ -115,15 +136,34 @@ void Environment::main()
 
 			if (event.type == sf::Event::KeyPressed)
 			{
-				if (event.key.code == sf::Keyboard::N)
+				if (event.key.code == sf::Keyboard::N) // NEW  PANE
 				{
-					logger::DEBUG("windows not yet implemented");
+					Pane* newpane = new Pane(sf::Vector2f(100, 100), panes.size() + 1);
+					rm.addToQueue(newpane->mainpane);
+					panes.push_back(newpane);
+					selectedPane = panes.back();
+				}
+				else if (event.key.code == sf::Keyboard::Delete) // DELETE PANE
+				{
+					int pid = selectedPane->PID;
+
+					for (size_t i = 0; i < panes.size(); i++)
+					{
+						if (selectedPane == panes[i])
+						{
+							rm.removeFromQueue(&selectedPane->mainpane);
+							panes.erase(std::remove(panes.begin(), panes.end(), selectedPane), panes.end());
+						}
+					}
+
+					logger::INFO("Removed Pane" + std::to_string(pid));
 				}
 			}
 		}
 
 		window->clear(sf::Color::Blue);
 
+//		window->draw(desktop_background);
 		rm.render();
 
 		window->display();

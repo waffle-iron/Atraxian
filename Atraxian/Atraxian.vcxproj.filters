@@ -28,6 +28,9 @@
     <ClCompile Include="Taskbar.cpp">
       <Filter>Source Files\Environment</Filter>
     </ClCompile>
+    <ClCompile Include="Pane.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="logger.hpp">
@@ -40,6 +43,9 @@
       <Filter>Source Files\Environment</Filter>
     </ClInclude>
     <ClInclude Include="Taskbar.hpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="Pane.hpp">
       <Filter>Source Files\Environment</Filter>
     </ClInclude>
   </ItemGroup>

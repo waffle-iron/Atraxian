@@ -11,7 +11,8 @@ public:
 	Renderer(sf::RenderWindow *target_window);
 	~Renderer();
 
-	void addToQueue(sf::RectangleShape &object); //  |   > OVERLOAD
+	void addToQueue(sf::RectangleShape &object);
+	void removeFromQueue(sf::RectangleShape *object);
 	void render();
 
 private:

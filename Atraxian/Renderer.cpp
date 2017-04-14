@@ -15,7 +15,7 @@ Renderer::~Renderer()
 
 void Renderer::addToQueue(sf::RectangleShape &object)
 {
- 	render_queue.push_back(object);
+ 	render_queue.push_back(&object);
 }
 
 void Renderer::render()
@@ -24,7 +24,7 @@ void Renderer::render()
 	{
 		for (size_t i = 0; i < render_queue.size(); i++)
 		{
-			window->draw(render_queue[i]);
+			window->draw(*render_queue[i]);
 		}
 	}
 }

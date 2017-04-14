@@ -16,7 +16,7 @@ public:
 
 private:
 	sf::RenderWindow *window;
-	std::vector<sf::RectangleShape> render_queue;
+	std::vector<sf::RectangleShape*> render_queue;
 };
 
 #endif

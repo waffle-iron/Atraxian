@@ -48,6 +48,7 @@ Environment::Environment(sf::VideoMode dimensions, sf::String title)
 
 	window = new sf::RenderWindow;
 	window->create(dimensions, title, sf::Style::Close | sf::Style::Titlebar);
+	window->setFramerateLimit(60);
 
 	taskbar = new Taskbar(window);
 
@@ -78,8 +79,8 @@ void Environment::main()
 	rm.addToQueue(taskbar->start_button);
 	rm.addToQueue(taskbar->div);
 
-	desktop_background.setFillColor(sf::Color::Blue);
-	desktop_background.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
+//	desktop_background.setFillColor(sf::Color::Blue);
+//	desktop_background.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
 
 	while (window->isOpen())
 	{
@@ -102,7 +103,11 @@ void Environment::main()
 					{
 						if (mouseIsOver(panes[i]->mainpane, *window))
 						{
+							selectedPane->mainpane.setFillColor(sf::Color::White);
+
 							selectedPane = panes[i];
+							selectedPane->mainpane.setFillColor(sf::Color::Magenta);
+
 							logger::INFO("Selected Pane" + std::to_string(selectedPane->PID));
 
 							break;
@@ -118,9 +123,11 @@ void Environment::main()
 							taskbar->start_button.setFillColor(sf::Color::Green);
 						}
 					}
-
+					else
+					{
 						logger::INFO("moving Pane" + std::to_string(selectedPane->PID) + " to " + std::to_string(sf::Mouse::getPosition(*window).x) + ", " + std::to_string(sf::Mouse::getPosition(*window).y));
 						selectedPane->setPosition(sf::Vector2f(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y));
+					}
 				}
 			}
 

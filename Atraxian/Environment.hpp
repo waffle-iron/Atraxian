@@ -8,7 +8,7 @@
 
 #include <SFML\Graphics.hpp>
 
-#include <string>
+class Taskbar;
 
 namespace environment
 {
@@ -18,18 +18,20 @@ namespace environment
 class Environment
 {
 public:
-	Environment(sf::VideoMode dimensions, std::string title);
+	Environment(sf::VideoMode dimensions, sf::String title);
 	~Environment();
 
 	sf::RenderWindow *window;
+	Taskbar *taskbar;
 
 	void main();
 
 private:
-	sf::RectangleShape taskbar;
-	sf::RectangleShape start_button;
+//	sf::RectangleShape taskbar;
+//	sf::RectangleShape start_button;
+//	sf::RectangleShape div;
 };
 
-#define ENVIRONMENT_VERSION "0.0.3"
+#define ENVIRONMENT_VERSION "0.0.41"
 
 #endif 

@@ -1,6 +1,7 @@
 #include "Environment.hpp"
 #include "logger.hpp"
 #include "Renderer.hpp"
+#include "Taskbar.hpp"
 
 #include <time.h>
 
@@ -40,35 +41,41 @@ namespace environment
 
 //---------- CLASS ----------
 
-Environment::Environment(sf::VideoMode dimensions, std::string title)
+Environment::Environment(sf::VideoMode dimensions, sf::String title)
 {
+	logger::INFO("Creating new Environment instance...");
+
 	window = new sf::RenderWindow;
-	window->create(sf::VideoMode(dimensions), title, sf::Style::Close | sf::Style::Titlebar);
+	window->create(dimensions, title, sf::Style::Close | sf::Style::Titlebar);
 
-	taskbar.setFillColor(sf::Color::White); // TODO: USERF:CUSTOMISE
-	taskbar.setSize(sf::Vector2f(window->getSize().x, 40)); // as long as the window, and 35 pixels high
-	taskbar.setOrigin(taskbar.getSize().x / 2, taskbar.getSize().y / 2); // center it
-	taskbar.setPosition(window->getSize().x / 2, (window->getSize().y - (taskbar.getLocalBounds().height / 2)));
-	// TODO: make the above two lines not generate warnings
+	taskbar = new Taskbar(window);
 
-	start_button.setFillColor(sf::Color::Green);
-	start_button.setSize(sf::Vector2f(40, 40));
-	start_button.setOrigin(start_button.getLocalBounds().width / 2, start_button.getLocalBounds().height / 2);
-	start_button.setPosition(taskbar.getLocalBounds().left + 20, taskbar.getPosition().y);
-
-	logger::INFO("New environment created.");
+	logger::INFO("New Environment instance created.");
 }
 
 Environment::~Environment()
 {
 	delete window;
+	delete taskbar;
 
 	logger::INFO("Environment destroyed.");
+}
+
+bool mouseIsOver(sf::Shape &object, sf::RenderWindow &window)
+{
+	if (object.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
+		return true;
+	else
+		return false;
 }
 
 void Environment::main()
 {
 	Renderer rm(window);
+
+	rm.addToQueue(taskbar->bar);
+	rm.addToQueue(taskbar->start_button);
+	rm.addToQueue(taskbar->div);
 
 	while (window->isOpen())
 	{
@@ -80,12 +87,43 @@ void Environment::main()
 				window->close();
 				return;
 			}
+
+			if (event.type == sf::Event::MouseButtonPressed)
+			{
+				if (event.key.code == sf::Mouse::Left)
+				{
+//					logger::DEBUG("left clicked at " + std::to_string(sf::Mouse::getPosition().x) + ", " + std::to_string(sf::Mouse::getPosition().y));
+
+					if (mouseIsOver(taskbar->start_button, *window))
+					{
+						logger::DEBUG("clicked the start button");
+
+						taskbar->start_button.setFillColor(sf::Color::Green);
+					}
+				}
+			}
+
+			if (event.type == sf::Event::MouseButtonReleased)
+			{
+				if (mouseIsOver(taskbar->start_button, *window))
+				{
+					logger::DEBUG("released the start button");
+
+					taskbar->start_button.setFillColor(sf::Color::Red);
+				}
+			}
+
+			if (event.type == sf::Event::KeyPressed)
+			{
+				if (event.key.code == sf::Keyboard::N)
+				{
+					logger::DEBUG("windows not yet implemented");
+				}
+			}
 		}
 
 		window->clear(sf::Color::Blue);
 
-		rm.addToQueue(taskbar);
-		rm.addToQueue(start_button);
 		rm.render();
 
 		window->display();

@@ -8,6 +8,7 @@ Pane::Pane(sf::Vector2f &size, int pid)
 
 	mainpane.setFillColor(sf::Color::Magenta);
 	mainpane.setSize(size);
+	mainpane.setOrigin(size.x / 2, size.y / 2);
 	mainpane.setPosition(100, 100);
 
 	logger::INFO("Pane" + std::to_string(pid) + " created");

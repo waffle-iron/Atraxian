@@ -10,6 +10,7 @@ public:
 	~Pane();
 
 	int PID; // Pane ID
+	bool focused;
 	bool active;
 
 	sf::RectangleShape mainpane;

@@ -26,13 +26,13 @@ public:
 	Taskbar *taskbar;
 
 	void main();
+	void focusPane(Pane* pane);
 
 private:
-	sf::RectangleShape desktop_background; // this only here because things won't draw for some reason
 	std::vector<Pane*> panes;
-	Pane *selectedPane;
+	Pane *focusedPane;
 };
 
-#define ENVIRONMENT_VERSION "0.0.41"
+#define ENVIRONMENT_VERSION "0.0.52"
 
 #endif 

@@ -71,6 +71,18 @@ bool mouseIsOver(sf::RectangleShape &object, sf::RenderWindow &window)
 		return false;
 }
 
+void Environment::focusPane(Pane* pane)
+{
+	if (panes.size() > 1)
+		focusedPane->mainpane.setFillColor(sf::Color::White);
+
+	focusedPane = pane;
+
+	focusedPane->mainpane.setFillColor(sf::Color::Magenta);
+
+	logger::INFO("Selected Pane" + std::to_string(focusedPane->PID)); 
+}
+
 void Environment::main()
 {
 	Renderer rm(window);
@@ -78,9 +90,6 @@ void Environment::main()
 	rm.addToQueue(taskbar->bar);
 	rm.addToQueue(taskbar->start_button);
 	rm.addToQueue(taskbar->div);
-
-//	desktop_background.setFillColor(sf::Color::Blue);
-//	desktop_background.setSize(sf::Vector2f(window->getSize().x, window->getSize().y));
 
 	while (window->isOpen())
 	{
@@ -97,18 +106,11 @@ void Environment::main()
 			{
 				if (event.key.code == sf::Mouse::Left)
 				{
-//					logger::DEBUG("left clicked at " + std::to_string(sf::Mouse::getPosition(*window).x) + ", " + std::to_string(sf::Mouse::getPosition(*window).y));
-
 					for (size_t i = 0; i < panes.size(); i++)
 					{
 						if (mouseIsOver(panes[i]->mainpane, *window))
 						{
-							selectedPane->mainpane.setFillColor(sf::Color::White);
-
-							selectedPane = panes[i];
-							selectedPane->mainpane.setFillColor(sf::Color::Magenta);
-
-							logger::INFO("Selected Pane" + std::to_string(selectedPane->PID));
+							focusPane(panes[i]);
 
 							break;
 						}
@@ -123,10 +125,10 @@ void Environment::main()
 							taskbar->start_button.setFillColor(sf::Color::Green);
 						}
 					}
-					else
+					else if (panes.size() > 0)
 					{
-						logger::INFO("moving Pane" + std::to_string(selectedPane->PID) + " to " + std::to_string(sf::Mouse::getPosition(*window).x) + ", " + std::to_string(sf::Mouse::getPosition(*window).y));
-						selectedPane->setPosition(sf::Vector2f(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y));
+						logger::INFO("moving Pane" + std::to_string(focusedPane->PID) + " to " + std::to_string(sf::Mouse::getPosition(*window).x) + ", " + std::to_string(sf::Mouse::getPosition(*window).y));
+						focusedPane->setPosition(sf::Vector2f(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y));
 					}
 				}
 			}
@@ -145,21 +147,22 @@ void Environment::main()
 			{
 				if (event.key.code == sf::Keyboard::N) // NEW  PANE
 				{
-					Pane* newpane = new Pane(sf::Vector2f(100, 100), panes.size() + 1);
+					Pane* newpane = new Pane(sf::Vector2f(100, 150), panes.size() + 1);
 					rm.addToQueue(newpane->mainpane);
 					panes.push_back(newpane);
-					selectedPane = panes.back();
+
+					focusPane(newpane);
 				}
 				else if (event.key.code == sf::Keyboard::Delete) // DELETE PANE
 				{
-					int pid = selectedPane->PID;
+					int pid = focusedPane->PID;
 
 					for (size_t i = 0; i < panes.size(); i++)
 					{
-						if (selectedPane == panes[i])
+						if (focusedPane == panes[i])
 						{
-							rm.removeFromQueue(&selectedPane->mainpane);
-							panes.erase(std::remove(panes.begin(), panes.end(), selectedPane), panes.end());
+							rm.removeFromQueue(&focusedPane->mainpane);
+							panes.erase(std::remove(panes.begin(), panes.end(), focusedPane), panes.end());
 						}
 					}
 
@@ -169,10 +172,7 @@ void Environment::main()
 		}
 
 		window->clear(sf::Color::Blue);
-
-//		window->draw(desktop_background);
 		rm.render();
-
 		window->display();
 	}
 }

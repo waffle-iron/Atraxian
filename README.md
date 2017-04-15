@@ -1,5 +1,5 @@
 # Atraxian
-A fake operating system writtin in C++ with [SFML 2.4](http://www.sfml-dev.org/)
+A fake operating system written in C++ with [SFML 2.4](http://www.sfml-dev.org/)
 
 By "fake operating system", we mean it's an operating system that requires an operating system to run.  
 It's really just a program, but that program is (going to be) a fully featured operating system.

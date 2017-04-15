@@ -13,6 +13,7 @@ public:
 
 	void addToQueue(sf::RectangleShape &object);
 	void removeFromQueue(sf::RectangleShape *object);
+	void clearQueue();
 	void render();
 
 private:

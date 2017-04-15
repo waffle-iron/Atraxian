@@ -31,10 +31,8 @@ public:
 private:
 	std::vector<Pane*> panes;
 	Pane *focusedPane;
-
-	void screenshot(sf::RenderWindow *window);
 };
 
-#define ENVIRONMENT_VERSION "0.0.54"
+#define ENVIRONMENT_VERSION "0.0.55"
 
 #endif 

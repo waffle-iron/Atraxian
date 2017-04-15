@@ -6,14 +6,14 @@
 class Pane
 {
 public:
-	Pane(sf::Vector2f &size, int pid, sf::RenderWindow *window);
+	Pane(const sf::Vector2f size, int pid, sf::RenderWindow *window);
 	~Pane();
 
 	int PID; // Pane ID
 	bool focused;
 	bool active;
 
-	void setPosition(sf::Vector2f &newpos);
+	void setPosition(const sf::Vector2f newpos);
 	void focus();
 	void defocus();
 

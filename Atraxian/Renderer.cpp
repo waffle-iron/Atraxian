@@ -33,6 +33,13 @@ void Renderer::removeFromQueue(sf::RectangleShape *object)
 //	logger::DEBUG("removed something from the render queue");
 }
 
+void Renderer::clearQueue()
+{
+	render_queue.clear();
+
+	logger::INFO("Cleared the Render Queue.");
+}
+
 void Renderer::render()
 {
 	if (!render_queue.empty())

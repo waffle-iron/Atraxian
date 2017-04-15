@@ -2,7 +2,7 @@
 #include "Environment.hpp"
 #include "logger.hpp"
 
-Pane::Pane(sf::Vector2f &size, int pid, sf::RenderWindow *window_)
+Pane::Pane(const sf::Vector2f size, int pid, sf::RenderWindow *window_)
 {
 	window = window_;
 	PID = pid;
@@ -23,7 +23,7 @@ Pane::Pane(sf::Vector2f &size, int pid, sf::RenderWindow *window_)
 	closebutton.setPosition((titlebar.getPosition().x + titlebar.getLocalBounds().width / 2) - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y);
 
 
-	const int BORDER_PADDING = mainpane.getLocalBounds().width / 32;
+	const float BORDER_PADDING = mainpane.getLocalBounds().width / 32.0f;
 
 	leftborder.setFillColor(sf::Color::Yellow);
 	leftborder.setSize(sf::Vector2f(BORDER_PADDING, mainpane.getLocalBounds().height + titlebar.getLocalBounds().height));
@@ -48,7 +48,7 @@ Pane::~Pane()
 	logger::INFO("Pane " + std::to_string(PID) + " destroyed.");
 }
 
-void Pane::setPosition(sf::Vector2f &newpos)
+void Pane::setPosition(const sf::Vector2f newpos)
 {
 	titlebar.setPosition(newpos);
 	mainpane.setPosition(titlebar.getPosition().x, titlebar.getPosition().y + mainpane.getLocalBounds().height / 2 + (titlebar.getLocalBounds().height / 2));

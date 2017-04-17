@@ -10,15 +10,17 @@ Renderer::Renderer(sf::RenderWindow *target_window)
 
 Renderer::~Renderer()
 {
+	render_queue.clear();
+
 	logger::INFO("Renderer isntance destroyed.");
 }
 
-void Renderer::addToQueue(sf::RectangleShape &object)
+void Renderer::addToQueue(sf::Drawable *object)
 {
- 	render_queue.push_back(&object);
+ 	render_queue.push_back(object);
 }
 
-void Renderer::removeFromQueue(sf::RectangleShape *object)
+void Renderer::removeFromQueue(sf::Drawable *object)
 {
 	for (size_t i = 0; i < render_queue.size(); i++)
 	{

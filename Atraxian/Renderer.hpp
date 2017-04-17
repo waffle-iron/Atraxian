@@ -11,14 +11,14 @@ public:
 	Renderer(sf::RenderWindow *target_window);
 	~Renderer();
 
-	void addToQueue(sf::RectangleShape &object);
-	void removeFromQueue(sf::RectangleShape *object);
+	void addToQueue(sf::Drawable *object);
+	void removeFromQueue(sf::Drawable *object);
 	void clearQueue();
 	void render();
 
 private:
 	sf::RenderWindow *window;
-	std::vector<sf::RectangleShape*> render_queue;
+	std::vector<sf::Drawable*> render_queue;
 };
 
 #endif

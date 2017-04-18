@@ -1,5 +1,4 @@
 #include "Pane.hpp"
-#include "Environment.hpp"
 #include "logger.hpp"
 
 Pane::Pane(const sf::Vector2f size, int pid, sf::RenderWindow *window_)
@@ -40,6 +39,16 @@ Pane::Pane(const sf::Vector2f size, int pid, sf::RenderWindow *window_)
 	bottomborder.setOrigin(bottomborder.getLocalBounds().width / 2, bottomborder.getLocalBounds().height / 2);
 	bottomborder.setPosition(mainpane.getPosition().x, mainpane.getPosition().y + (mainpane.getLocalBounds().height / 2) + bottomborder.getLocalBounds().height / 2);
 
+	boundingbox.setFillColor(sf::Color::Magenta);
+	boundingbox.setSize(sf::Vector2f(mainpane.getLocalBounds().width + (rightborder.getLocalBounds().width + leftborder.getLocalBounds().width), mainpane.getLocalBounds().height + (titlebar.getLocalBounds().height + bottomborder.getLocalBounds().height)));
+	boundingbox.setOrigin(boundingbox.getLocalBounds().width / 2, boundingbox.getLocalBounds().height / 2);
+	
+	boundingbox.setPosition(mainpane.getPosition().x, mainpane.getPosition().y - ((titlebar.getLocalBounds().height / 2) - (bottomborder.getLocalBounds().height / 2)));
+//	boundingbox.setPosition(mainpane.getPosition().x + titlebar.getLocalBounds().height / 2, mainpane.getPosition().y);
+//  adding a thing like that to the x makes it look like a shadow, might keep this for later.
+
+	setPosition(window->getView().getCenter());
+
 	logger::INFO("Pane" + std::to_string(pid) + " created");
 }
 
@@ -56,6 +65,7 @@ void Pane::setPosition(const sf::Vector2f newpos)
 	leftborder.setPosition((mainpane.getPosition().x - mainpane.getLocalBounds().width / 2) - leftborder.getLocalBounds().width / 2, mainpane.getPosition().y - titlebar.getLocalBounds().height / 2);
 	rightborder.setPosition((mainpane.getPosition().x + mainpane.getLocalBounds().width / 2 + (rightborder.getLocalBounds().width)) - rightborder.getLocalBounds().width / 2, mainpane.getPosition().y - titlebar.getLocalBounds().height / 2);
 	bottomborder.setPosition(mainpane.getPosition().x, mainpane.getPosition().y + (mainpane.getLocalBounds().height / 2) + bottomborder.getLocalBounds().height / 2);
+	boundingbox.setPosition(mainpane.getPosition().x, mainpane.getPosition().y - ((titlebar.getLocalBounds().height / 2) - (bottomborder.getLocalBounds().height / 2)));
 }
 
 void Pane::focus()

@@ -12,8 +12,6 @@ namespace logger
 	void ERROR(std::string output);
 
 	void SILENT(std::string output);
-
-	void DEBUG(std::string output);
 }
 
 #endif

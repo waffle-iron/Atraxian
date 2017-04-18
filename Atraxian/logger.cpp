@@ -57,14 +57,4 @@ namespace logger
 
 		write_log(output);
 	}
-
-	void DEBUG(std::string output)
-	{
-		#if _DEBUG
-			output = environment::getTimestamp() + " DEBUG: " + output;
-			std::cout << output << std::endl;
-
-			write_log(output);
-		#endif
-	}
 }

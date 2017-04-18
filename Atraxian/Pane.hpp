@@ -9,6 +9,14 @@ public:
 	Pane(const sf::Vector2f size, int pid, sf::RenderWindow *window);
 	~Pane();
 
+	sf::RectangleShape mainpane;
+	sf::RectangleShape titlebar;
+	sf::RectangleShape closebutton;
+	sf::RectangleShape leftborder;
+	sf::RectangleShape rightborder;
+	sf::RectangleShape bottomborder;
+	sf::RectangleShape boundingbox;
+
 	int PID; // Pane ID
 	bool focused;
 	bool active;
@@ -16,13 +24,6 @@ public:
 	void setPosition(const sf::Vector2f newpos);
 	void focus();
 	void defocus();
-
-	sf::RectangleShape mainpane;
-	sf::RectangleShape titlebar;
-	sf::RectangleShape closebutton;
-	sf::RectangleShape leftborder;
-	sf::RectangleShape rightborder;
-	sf::RectangleShape bottomborder;
 
 private:
 	sf::RenderWindow *window;

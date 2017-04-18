@@ -8,6 +8,7 @@
 
 #include <SFML\Graphics.hpp>
 
+class Renderer;
 class Taskbar;
 class Pane;
 
@@ -33,6 +34,6 @@ private:
 	Pane *focusedPane;
 };
 
-#define ENVIRONMENT_VERSION "0.0.55"
+#define ENVIRONMENT_VERSION "0.0.58"
 
 #endif 

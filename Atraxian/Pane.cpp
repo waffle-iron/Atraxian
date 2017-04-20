@@ -1,6 +1,8 @@
 #include "Pane.hpp"
 #include "logger.hpp"
 
+//static sf::Vector3i color(220, 220, 220);
+
 Pane::Pane(const sf::Vector2f size, int pid, sf::RenderWindow *window_)
 {
 	window = window_;
@@ -76,6 +78,8 @@ void Pane::focus()
 	leftborder.setFillColor(sf::Color::Green);
 	rightborder.setFillColor(sf::Color::Green);
 	bottomborder.setFillColor(sf::Color::Green);
+
+	logger::INFO("Focused Pane" + std::to_string(PID) + ".");
 }
 
 void Pane::defocus()
@@ -86,4 +90,6 @@ void Pane::defocus()
 	leftborder.setFillColor(sf::Color::Black);
 	rightborder.setFillColor(sf::Color::Black);
 	bottomborder.setFillColor(sf::Color::Black);
+	
+	logger::INFO("Defocused Pane" + std::to_string(PID) + ".");
 }

@@ -4,7 +4,7 @@
 #include "Taskbar.hpp"
 #include "Pane.hpp"
 
-#include <time.h>
+#include <ctime>
 #include <filesystem>
 
 namespace environment
@@ -53,6 +53,8 @@ Environment::Environment(sf::VideoMode dimensions, sf::String title)
 
 	taskbar = new Taskbar(window);
 
+	nullPane = new Pane(sf::Vector2f(0, 0), 0, window);
+
 	logger::INFO("New Environment instance created.");
 }
 
@@ -67,15 +69,7 @@ Environment::~Environment()
 	logger::INFO("Environment destroyed.");
 }
 
-bool mouseIsOver(sf::RectangleShape &object, sf::RenderWindow &window)
-{
-	if (object.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
-		return true;
-	else
-		return false;
-}
-
-bool mouseIsOver(sf::CircleShape &object, sf::RenderWindow &window)
+bool mouseIsOver(sf::Shape &object, sf::RenderWindow &window)
 {
 	if (object.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 		return true;
@@ -85,19 +79,15 @@ bool mouseIsOver(sf::CircleShape &object, sf::RenderWindow &window)
 
 void Environment::focusPane(Pane* pane)
 {
-	if (panes.size() > 1)
+	if (panes.size() > 1 && pane != nullPane)
 	{
-		focusedPane->defocus();
 		focusedPane->active = false;
-		focusedPane->focused = false;
+		focusedPane->defocus();
 	}
 
-	pane->focus();
 	focusedPane = pane;
+	focusedPane->focus();
 	focusedPane->active = true;
-	focusedPane->focused = true;
-
-	logger::INFO("Focused Pane" + std::to_string(focusedPane->PID));
 }
 
 void Environment::main()
@@ -117,6 +107,7 @@ void Environment::main()
 		{
 			if (event.type == sf::Event::Closed)
 			{
+				panes.clear();
 				rm.clearQueue();
 				window->close();
 				return;
@@ -129,15 +120,22 @@ void Environment::main()
 					if (panes.size() > 0) // make sure there are panes
 					{
 						bool selected(false);
+						bool already_selected(false);
 
 						for (size_t i = 0; i < panes.size(); i++) // all the panes
 						{
 							if (mouseIsOver(panes[i]->boundingbox, *window)) // check if we're in the pane
 							{
+								logger::INFO("Clicked inside the boundingbox.");
+
 								if (mouseIsOver(panes[i]->titlebar, *window)) // then on the title bar
 								{
+									logger::INFO("Clicked inside the titlebar.");
+
 									if (mouseIsOver(panes[i]->closebutton, *window)) // then the close button
 									{
+										logger::INFO("Clicked the close button.");
+
 										int temp_PID = panes[i]->PID;
 
 										rm.removeFromQueue(&panes[i]->mainpane);
@@ -154,21 +152,47 @@ void Environment::main()
 									}
 									else // just on the titlebar
 									{
+										logger::INFO("Clicked only the titlebar, started dragging.");
+
 										dragging_pane = true;
 									}
 								}
 
-								focusPane(panes[i]);
-								selected = true;
+								if (panes[i] == focusedPane)
+								{
+									already_selected = true;
+
+									logger::INFO("Pane was already focused.");
+								}
+								else // wasn't already selected.
+								{
+									logger::INFO("Pane was not already focused.");
+
+									focusPane(panes[i]);
+									selected = true;
+								}
 
 								break;
 							}
 						}
-						
-						// if we clicked, but it wasn't in part of a pane, unfocus the focused pane.
-						if (!selected && panes.size() > 0 && focusedPane->focused)
+
+						if (!already_selected && panes.size() > 0)
 						{
-							focusedPane->defocus();
+							if (!selected)
+							{
+								if (focusedPane != nullPane)
+								{
+									logger::INFO("Nothing was selected.");
+
+									focusedPane->defocus();
+									focusedPane->active = false;
+									focusedPane = nullPane;
+								}
+							}
+							else
+							{
+								logger::INFO("Something new was selected.");
+							}
 						}
 					}
 
@@ -221,7 +245,7 @@ void Environment::main()
 					Pane* newpane = new Pane(sf::Vector2f(200, 300), panes.size() + 1, window);
 
 //					rm.addToQueue(&newpane->boundingbox);
-					
+
 					rm.addToQueue(&newpane->titlebar);
 					rm.addToQueue(&newpane->mainpane);
 					rm.addToQueue(&newpane->closebutton);

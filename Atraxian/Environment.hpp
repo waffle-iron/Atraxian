@@ -31,9 +31,10 @@ public:
 
 private:
 	std::vector<Pane*> panes;
-	Pane *focusedPane;
+	Pane *nullPane;
+	Pane *focusedPane = nullPane;
 };
 
-#define ENVIRONMENT_VERSION "0.0.58"
+#define ENVIRONMENT_VERSION "0.0.59"
 
 #endif 

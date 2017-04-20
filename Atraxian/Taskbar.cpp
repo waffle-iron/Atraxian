@@ -1,5 +1,4 @@
 #include "Taskbar.hpp"
-#include "Environment.hpp"
 #include "logger.hpp"
 
 Taskbar::Taskbar(sf::RenderWindow *window)

@@ -1,8 +1,8 @@
+#include "Environment.hpp"
+
 #include <fstream>
 #include <iostream>
 #include <string>
-
-#include "Environment.hpp"
 
 void write_log(const std::string output)
 {

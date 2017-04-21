@@ -13,11 +13,6 @@ int main()
 	atraxia->main();
 	delete atraxia;
 
-	if (false)
-	{
-		std::cout << "Stop snooping!" << std::endl;
-	}
-
 	logger::INFO("Exiting...");
 	return 0;
 }

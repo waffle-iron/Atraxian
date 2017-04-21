@@ -7,15 +7,37 @@
 #define ENVIRONMENT_HPP
 
 #include <SFML\Graphics.hpp>
+#include <string>
+#include <experimental\filesystem>
+#include <fstream>
+#include <iostream>
 
 class Renderer;
 class Taskbar;
 class Pane;
 
+namespace fs = std::experimental::filesystem;
+
 namespace environment
 {
 	std::string getTimestamp();
+
+	namespace filesystem
+	{
+		void create_dir(std::string name, std::string dir);
+
+		void create_file(std::string name, std::string ext, std::string dir);
+
+		bool exists(std::string thing_that_may_or_may_not_be_real); // yus
+
+		void move(std::string from, std::string to);
+
+		void remove_dir(std::string name, std::string dir);
+
+		void remove_file(std::string file, std::string dir);
+	}
 }
+
 
 class Environment
 {

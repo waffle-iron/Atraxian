@@ -39,7 +39,94 @@ namespace environment
 
 		return timestamp;
 	}
+
+	namespace filesystem
+	{
+		void create_dir(std::string name, std::string dir)
+		{
+			fs::current_path(dir);
+			fs::create_directory(name);
+		}
+
+		void create_file(std::string name, std::string ext, std::string dir)
+		{
+			fs::current_path(dir);
+			std::ofstream file_created(name + "." + ext);
+			file_created << "File created!" << std::endl;
+			file_created.close();
+		}
+
+		bool exists(std::string thing_that_may_or_may_not_be_real)
+		{
+			bool existance;
+
+			if (fs::is_directory(thing_that_may_or_may_not_be_real))
+			{
+				existance = true;
+			}
+
+			else if (fs::is_regular_file(thing_that_may_or_may_not_be_real))
+			{
+				existance = true;
+			}
+
+			else
+			{
+				existance = false;
+			}
+
+			return existance;
+		}
+
+		void move(std::string from, std::string to)
+		{
+			if (filesystem::exists(from) && filesystem::exists(to))
+			{
+				fs::copy(from, to);
+				fs::remove(from);
+			}
+
+		}
+
+		void remove_dir(std::string name, std::string dir)
+		{
+			if (filesystem::exists(dir))
+			{
+				fs::current_path(dir);
+
+				if (filesystem::exists(name))
+				{
+					fs::remove(name);
+				}
+				else
+				{
+					std::cout << "Folder to delete not found!" << std::endl;
+				}
+			}
+
+			else
+			{
+				std::cout << "Dir not found!" << std::endl;
+			}
+		}
+
+		void remove_file(std::string file, std::string dir)
+		{
+			if (filesystem::exists(dir))
+			{
+				fs::current_path(dir);
+
+				if (filesystem::exists(file))
+				{
+					fs::remove(file);
+				}
+			}
+		}
+	}
+	}
 }
+
+
 
 //---------- CLASS ----------
 

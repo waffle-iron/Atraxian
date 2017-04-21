@@ -35,6 +35,6 @@ private:
 	Pane *focusedPane = nullPane;
 };
 
-#define ENVIRONMENT_VERSION "0.0.59"
+const std::string ENVIRONMENT_VERSION("0.0.59");
 
 #endif 

@@ -7,9 +7,9 @@
 
 int main()
 {
-	logger::INFO("Initlializing Atraxian " ENVIRONMENT_VERSION "...");
+	logger::INFO("Initlializing Atraxian " + ENVIRONMENT_VERSION + "...");
 
-	Environment *atraxia = new Environment(sf::VideoMode(1080, 720), "AtraxiaN-" ENVIRONMENT_VERSION);
+	Environment *atraxia = new Environment(sf::VideoMode(1080, 720), ("AtraxiaN-" + ENVIRONMENT_VERSION));
 	atraxia->main();
 	delete atraxia;
 

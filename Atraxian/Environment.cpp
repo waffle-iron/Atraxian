@@ -6,6 +6,8 @@
 
 #include <ctime>
 #include <filesystem>
+#include <fstream>
+#include <iostream>
 
 namespace environment
 {
@@ -42,89 +44,89 @@ namespace environment
 
 	namespace filesystem
 	{
+		namespace fs = std::experimental::filesystem;
+
+		bool exists(std::string thing_that_may_or_may_not_be_real)
+		{
+			if (fs::exists(thing_that_may_or_may_not_be_real))
+				return true;
+			else
+				return false;
+		}
+
 		void create_dir(std::string name, std::string dir)
 		{
 			fs::current_path(dir);
 			fs::create_directory(name);
 		}
 
-		void create_file(std::string name, std::string ext, std::string dir)
+		void create_file(std::string name, std::string extention, std::string dir)
 		{
 			fs::current_path(dir);
-			std::ofstream file_created(name + "." + ext);
-			file_created << "File created!" << std::endl;
+			std::ofstream file_created(name + "." + extention);
 			file_created.close();
 		}
 
-		bool exists(std::string thing_that_may_or_may_not_be_real)
+		bool move(std::string from, std::string to)
 		{
-			bool existance;
-
-			if (fs::is_directory(thing_that_may_or_may_not_be_real))
+			if (exists(from) && exists(to)) // file to move, dir to move to.
 			{
-				existance = true;
-			}
+				logger::INFO("Copying '" + from + "' to '" + to + "',");
 
-			else if (fs::is_regular_file(thing_that_may_or_may_not_be_real))
-			{
-				existance = true;
-			}
-
-			else
-			{
-				existance = false;
-			}
-
-			return existance;
-		}
-
-		void move(std::string from, std::string to)
-		{
-			if (filesystem::exists(from) && filesystem::exists(to))
-			{
 				fs::copy(from, to);
 				fs::remove(from);
-			}
 
-		}
-
-		void remove_dir(std::string name, std::string dir)
-		{
-			if (filesystem::exists(dir))
-			{
-				fs::current_path(dir);
-
-				if (filesystem::exists(name))
+				if (exists(to))
 				{
-					fs::remove(name);
+					logger::INFO("Success!");
+
+					return true;
 				}
 				else
 				{
-					std::cout << "Folder to delete not found!" << std::endl;
+					logger::ERROR("Failed.");
+					
+					return false;
 				}
 			}
-
 			else
 			{
-				std::cout << "Dir not found!" << std::endl;
+				logger::ERROR("Specified file does not exist.");
+
+				return false;
 			}
 		}
 
-		void remove_file(std::string file, std::string dir)
+		bool remove(std::string thing_to_remove)
 		{
-			if (filesystem::exists(dir))
-			{
-				fs::current_path(dir);
+			logger::INFO("Removing '" + thing_to_remove + "'.");
 
-				if (filesystem::exists(file))
+			if (exists(thing_to_remove))
+			{
+				fs::remove(thing_to_remove);
+
+				if (!exists(thing_to_remove))
 				{
-					fs::remove(file);
+					logger::INFO("Success!");
+
+					return true;
+				}
+				else
+				{
+					logger::ERROR("Failed.");
+
+					return false;
 				}
 			}
+			else
+			{
+				logger::ERROR("Specified file does not exist.");
+
+				return false;
+			}
 		}
-	}
-	}
-}
+	} // filesystem
+} // enviroment
 
 
 

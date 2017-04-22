@@ -58,7 +58,7 @@ Environment::Environment(sf::VideoMode dimensions, sf::String title)
 
 	taskbar = new Taskbar(window);
 
-	nullPane = new Pane(sf::Vector2f(0, 0), 0, window);
+	nullPane = new Pane(sf::Vector2f(0, 0), "null", 0, window);
 
 	logger::INFO("New Environment instance created.");
 }
@@ -247,16 +247,18 @@ void Environment::main()
 			{
 				if (event.key.code == sf::Keyboard::N) // NEW PANE HOTKEY
 				{
-					Pane* newpane = new Pane(sf::Vector2f(200, 300), panes.size() + 1, window);
+					Pane* newpane = new Pane(sf::Vector2f(200, 300), "Pane" + std::to_string(panes.size() + 1), panes.size() + 1, window);
 
 //					rm.addToQueue(&newpane->boundingbox);
 
+					rm.addToQueue(&newpane->titletext);
 					rm.addToQueue(&newpane->titlebar);
-					rm.addToQueue(&newpane->mainpane);
 					rm.addToQueue(&newpane->closebutton);
+					rm.addToQueue(&newpane->mainpane);
 					rm.addToQueue(&newpane->leftborder);
 					rm.addToQueue(&newpane->rightborder);
 					rm.addToQueue(&newpane->bottomborder);
+					rm.addToQueue(&newpane->titletext);
 					panes.push_back(newpane); // add it to the stack
 
 					focusPane(newpane);
@@ -265,8 +267,9 @@ void Environment::main()
 				{
 					int temp_PID = focusedPane->PID;
 
-					rm.removeFromQueue(&focusedPane->mainpane);
+					rm.removeFromQueue(&focusedPane->titletext);
 					rm.removeFromQueue(&focusedPane->titlebar);
+					rm.removeFromQueue(&focusedPane->mainpane);
 					rm.removeFromQueue(&focusedPane->closebutton);
 					rm.removeFromQueue(&focusedPane->leftborder);
 					rm.removeFromQueue(&focusedPane->rightborder);

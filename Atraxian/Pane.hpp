@@ -6,7 +6,7 @@
 class Pane
 {
 public:
-	Pane(const sf::Vector2f size, int pid, sf::RenderWindow *window);
+	Pane(const sf::Vector2f size, const std::string title, const int pid, sf::RenderWindow *window);
 	~Pane();
 
 	sf::RectangleShape mainpane;
@@ -16,6 +16,7 @@ public:
 	sf::RectangleShape rightborder;
 	sf::RectangleShape bottomborder;
 	sf::RectangleShape boundingbox;
+	sf::Text titletext;
 
 	int PID; // Pane ID
 	bool focused;

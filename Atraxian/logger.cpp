@@ -30,8 +30,8 @@ namespace logger
 	void INFO(std::string output)
 	{
 		output = environment::getTimestamp() + " INFO: " + output;
-		std::cout << output << std::endl;
 
+		std::cout << output << std::endl;
 		write_log(output);
 	}
 
@@ -51,10 +51,15 @@ namespace logger
 		write_log(output);
 	}
 
-	void SILENT(std::string output)
+	void SILENT(std::string output, std::string type)
 	{
-		output = environment::getTimestamp() + " SILENT: " + output;
+		output = environment::getTimestamp() + " " + type + ": " + output;
 
 		write_log(output);
+	}
+
+	void BREAK()
+	{
+		std::cout << std::endl;
 	}
 }

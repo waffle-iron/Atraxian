@@ -1,5 +1,5 @@
 #include "Environment.hpp"
-#include "logger.hpp"
+#include "Logger.hpp"
 #include "Renderer.hpp"
 #include "Taskbar.hpp"
 #include "Pane.hpp"
@@ -46,9 +46,7 @@ namespace environment
 Environment::Environment(sf::VideoMode dimensions, sf::String title)
 {
 	if (!environment::filesystem::exists("Atraxian.exe"))
-	{
 		logger::WARNING("Atraxian is not running from a supported environment.");
-	}
 
 	logger::INFO("Creating new Environment instance...");
 

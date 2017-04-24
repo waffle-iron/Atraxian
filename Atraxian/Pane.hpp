@@ -28,6 +28,7 @@ public:
 
 private:
 	sf::RenderWindow *window;
+	sf::Font font;
 };
 
 #endif

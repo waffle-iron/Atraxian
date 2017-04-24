@@ -2,11 +2,6 @@
 #include "Pane.hpp"
 #include "logger.hpp"
 
-static sf::Vector3i focusedColour(109, 109, 109);
-static sf::Vector3i defocusedColour(190, 190, 190);
-
-sf::Font font;
-
 Pane::Pane(const sf::Vector2f size, const std::string title, const int pid, sf::RenderWindow *window_)
 {
 	window = window_;
@@ -64,6 +59,9 @@ Pane::~Pane()
 {
 	logger::INFO("Pane " + std::to_string(PID) + " destroyed.");
 }
+
+const sf::Vector3i focusedColour(109, 109, 109);
+const sf::Vector3i defocusedColour(190, 190, 190);
 
 void Pane::setPosition(const sf::Vector2f newpos)
 {

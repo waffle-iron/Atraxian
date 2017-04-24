@@ -13,6 +13,7 @@ public:
 
 	void addToQueue(sf::Drawable *object);
 	void removeFromQueue(sf::Drawable *object);
+	void pushBack(sf::Drawable *object);
 	void clearQueue();
 	void render();
 

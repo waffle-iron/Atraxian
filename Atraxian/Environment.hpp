@@ -20,7 +20,7 @@ namespace environment
 class Environment
 {
 public:
-	Environment(sf::VideoMode dimensions, sf::String title);
+	Environment(sf::VideoMode dimensions, std::string title);
 	~Environment();
 
 	sf::RenderWindow *window;
@@ -35,6 +35,6 @@ private:
 	Pane *focusedPane = nullPane;
 };
 
-const std::string ENVIRONMENT_VERSION("0.0.61");
+const std::string ENVIRONMENT_VERSION("0.0.62");
 
 #endif 

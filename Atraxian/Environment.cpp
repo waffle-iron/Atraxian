@@ -43,7 +43,7 @@ namespace environment
 
 //---------- CLASS ----------
 
-Environment::Environment(sf::VideoMode dimensions, sf::String title)
+Environment::Environment(sf::VideoMode dimensions, std::string title)
 {
 	if (!environment::filesystem::exists("Atraxian.exe"))
 		logger::WARNING("Atraxian is not running from a supported environment.");
@@ -102,7 +102,7 @@ void Environment::main()
 	rm.addToQueue(&taskbar->div);
 
 	bool dragging_pane(false);
-
+	
 	while (window->isOpen())
 	{
 		sf::Event event;
@@ -125,21 +125,21 @@ void Environment::main()
 						bool selected(false);
 						bool already_selected(false);
 
-						for (size_t i = 0; i < panes.size(); i++) // all the panes
+						for (int i = panes.size() - 1; i >= 0; i--) // all the panes, from the newest to the oldest.
 						{
 							if (mouseIsOver(panes[i]->boundingbox, *window)) // check if we're in the pane
 							{
-								logger::INFO("Clicked inside the boundingbox.");
+								logger::INFO("Clicked inside the boundingbox of Pane" + std::to_string(panes[i]->PID));
 
 								if (mouseIsOver(panes[i]->titlebar, *window)) // then on the title bar
 								{
-									logger::INFO("Clicked inside the titlebar.");
+									logger::INFO("Clicked inside the titlebar of Pane" + std::to_string(panes[i]->PID));
 
 									if (mouseIsOver(panes[i]->closebutton, *window)) // then the close button
 									{
-										logger::INFO("Clicked the close button.");
+										logger::INFO("Clicked the close button of Pane" + std::to_string(panes[i]->PID));
 
-										int temp_PID = panes[i]->PID;
+										const int PID = panes[i]->PID;
 
 										rm.removeFromQueue(&panes[i]->titletext);
 										rm.removeFromQueue(&panes[i]->titlebar);
@@ -150,11 +150,11 @@ void Environment::main()
 										rm.removeFromQueue(&panes[i]->bottomborder);
 										panes.erase(std::remove(panes.begin(), panes.end(), panes[i]), panes.end());
 
-										logger::INFO("Removed Pane" + std::to_string(temp_PID) + ".");
+										logger::INFO("Removed Pane" + std::to_string(PID) + ".");
 
 										break;
 									}
-									else // just on the titlebar
+									else
 									{
 										logger::INFO("Clicked only the titlebar, started dragging.");
 
@@ -166,27 +166,39 @@ void Environment::main()
 								{
 									already_selected = true;
 
-									logger::INFO("Pane was already focused.");
+									logger::INFO("Pane" + std::to_string(focusedPane->PID) + " was already focused.");
 								}
 								else // wasn't already selected.
 								{
-									logger::INFO("Pane was not already focused.");
+									logger::INFO("Pane" + std::to_string(focusedPane->PID) + " was not already focused.");
 
 									focusPane(panes[i]);
 									selected = true;
+
+									logger::INFO("Bringing Pane" + std::to_string(focusedPane->PID) + " to the top of the Render Queue.");
+									rm.pushBack(&focusedPane->titletext);
+									rm.pushBack(&focusedPane->titlebar);
+									rm.pushBack(&focusedPane->closebutton);
+									rm.pushBack(&focusedPane->mainpane);
+									rm.pushBack(&focusedPane->leftborder);
+									rm.pushBack(&focusedPane->rightborder);
+									rm.pushBack(&focusedPane->bottomborder);
+									rm.pushBack(&focusedPane->titletext);
 								}
 
 								break;
 							}
 						}
 
+						// if we didn't select anything, do nothing.
+						// if there is nothing we *could have* selected, do nothing (because they might have clicked the close button).
 						if (!already_selected && !panes.empty())
 						{
 							if (!selected)
 							{
 								if (focusedPane != nullPane)
 								{
-									logger::INFO("Nothing was selected.");
+									logger::INFO("Nothing was selected. (Not even Pane0 D:)");
 
 									focusedPane->defocus();
 									focusedPane->active = false;
@@ -195,7 +207,7 @@ void Environment::main()
 							}
 							else
 							{
-								logger::INFO("Something new was selected.");
+								logger::INFO("Something new was selected. (Pane" + std::to_string(focusedPane->PID) + ")");
 							}
 						}
 					}
@@ -208,7 +220,7 @@ void Environment::main()
 
 							taskbar->start_button.setFillColor(sf::Color::Green);
 
-							if (!panes.empty())
+							if (!panes.empty())																				// TODO: this
 								focusedPane->defocus(); // we defocus it because we are focused on the start menu while we do this, we will refocus when the start menu is closed.
 						}
 					}
@@ -246,10 +258,10 @@ void Environment::main()
 			{
 				if (event.key.code == sf::Keyboard::N) // NEW PANE HOTKEY
 				{
-					Pane* newpane = new Pane(sf::Vector2f(200, 300), "Pane" + std::to_string(panes.size() + 1), panes.size() + 1, window);
+					const int PID = panes.size() + 1;
+					Pane* newpane = new Pane(sf::Vector2f(200, 300), "Pane" + std::to_string(PID), PID, window);
 
 //					rm.addToQueue(&newpane->boundingbox);
-
 					rm.addToQueue(&newpane->titletext);
 					rm.addToQueue(&newpane->titlebar);
 					rm.addToQueue(&newpane->closebutton);

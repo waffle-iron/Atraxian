@@ -22,17 +22,12 @@ void Renderer::addToQueue(sf::Drawable *object)
 
 void Renderer::removeFromQueue(sf::Drawable *object)
 {
-	for (size_t i = 0; i < render_queue.size(); i++)
-	{
-		if (object == render_queue[i])
-		{
-			render_queue.erase(std::remove(render_queue.begin(), render_queue.end(), object), render_queue.end());
+	render_queue.erase(std::remove(render_queue.begin(), render_queue.end(), object), render_queue.end());
+}
 
-			break;
-		}
-	}
-
-//	logger::DEBUG("removed something from the render queue");
+void Renderer::pushBack(sf::Drawable *object)
+{
+	render_queue.push_back(object);
 }
 
 void Renderer::clearQueue()

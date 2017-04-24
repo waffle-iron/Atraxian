@@ -120,7 +120,7 @@ void Environment::main()
 			{
 				if (event.key.code == sf::Mouse::Left)
 				{
-					if (panes.size() > 0) // make sure there are panes
+					if (!panes.empty()) // make sure there are panes
 					{
 						bool selected(false);
 						bool already_selected(false);
@@ -141,8 +141,9 @@ void Environment::main()
 
 										int temp_PID = panes[i]->PID;
 
-										rm.removeFromQueue(&panes[i]->mainpane);
+										rm.removeFromQueue(&panes[i]->titletext);
 										rm.removeFromQueue(&panes[i]->titlebar);
+										rm.removeFromQueue(&panes[i]->mainpane);
 										rm.removeFromQueue(&panes[i]->closebutton);
 										rm.removeFromQueue(&panes[i]->leftborder);
 										rm.removeFromQueue(&panes[i]->rightborder);
@@ -179,7 +180,7 @@ void Environment::main()
 							}
 						}
 
-						if (!already_selected && panes.size() > 0)
+						if (!already_selected && !panes.empty())
 						{
 							if (!selected)
 							{
@@ -207,7 +208,7 @@ void Environment::main()
 
 							taskbar->start_button.setFillColor(sf::Color::Green);
 
-							if (panes.size() > 0)
+							if (!panes.empty())
 								focusedPane->defocus(); // we defocus it because we are focused on the start menu while we do this, we will refocus when the start menu is closed.
 						}
 					}
@@ -224,7 +225,7 @@ void Environment::main()
 
 						taskbar->start_button.setFillColor(sf::Color::Red);
 
-//						if (panes.size() > 0 && focusedPane->focused == true)
+//						if (!panes.empty() && focusedPane->focused == true)
 //						{
 //							focusedPane->focus(); // refocus the panel.
 //						}
@@ -261,7 +262,7 @@ void Environment::main()
 
 					focusPane(newpane);
 				}
-				else if (panes.size() > 0 && event.key.code == sf::Keyboard::Delete) // DELETE PANE HOTKEY
+				else if (!panes.empty() && event.key.code == sf::Keyboard::Delete) // DELETE PANE HOTKEY
 				{
 					int temp_PID = focusedPane->PID;
 
@@ -281,7 +282,7 @@ void Environment::main()
 
 		{
 			// if we are holding the left alt key and space at the same time, and there is at least one pane, center it.
-			if (panes.size() > 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			if (!panes.empty() && sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 			{
 				focusedPane->setPosition(sf::Vector2f(window->getView().getCenter()));
 

@@ -2,7 +2,7 @@
 #include "Pane.hpp"
 #include "logger.hpp"
 
-const int titlebar_height = 32;
+const float titlebar_height = 32.0f;
 const float border_width = 6.25f;
 
 Pane::Pane(const sf::Vector2f size, const std::string title, const int pid, sf::RenderWindow *window_)
@@ -26,8 +26,8 @@ Pane::~Pane()
 	logger::INFO("Pane " + std::to_string(PID) + " destroyed.");
 }
 
-const sf::Vector3i focusedColour(109, 109, 109);
-const sf::Vector3i defocusedColour(190, 190, 190);
+const sf::Color focusedColour(109, 109, 109);
+const sf::Color defocusedColour(190, 190, 190);
 
 void Pane::setPosition(const sf::Vector2f newpos)
 {
@@ -61,10 +61,10 @@ void Pane::focus()
 {
 	focused = true;
 
-	titlebar.setFillColor(sf::Color(focusedColour.x, focusedColour.y, focusedColour.z));
-	leftborder.setFillColor(sf::Color(focusedColour.x, focusedColour.y, focusedColour.z));
-	rightborder.setFillColor(sf::Color(focusedColour.x, focusedColour.y, focusedColour.z));
-	bottomborder.setFillColor(sf::Color(focusedColour.x, focusedColour.y, focusedColour.z));
+	titlebar.setFillColor(sf::Color(focusedColour));
+	leftborder.setFillColor(sf::Color(focusedColour));
+	rightborder.setFillColor(sf::Color(focusedColour));
+	bottomborder.setFillColor(sf::Color(focusedColour));
 
 	logger::INFO("Focused Pane" + std::to_string(PID) + ".");
 }
@@ -73,10 +73,10 @@ void Pane::defocus()
 {
 	focused = false;
 
-	titlebar.setFillColor(sf::Color(defocusedColour.x, defocusedColour.y, defocusedColour.z));
-	leftborder.setFillColor(sf::Color(defocusedColour.x, defocusedColour.y, defocusedColour.z));
-	rightborder.setFillColor(sf::Color(defocusedColour.x, defocusedColour.y, defocusedColour.z));
-	bottomborder.setFillColor(sf::Color(defocusedColour.x, defocusedColour.y, defocusedColour.z));
+	titlebar.setFillColor(sf::Color(defocusedColour));
+	leftborder.setFillColor(sf::Color(defocusedColour));
+	rightborder.setFillColor(sf::Color(defocusedColour));
+	bottomborder.setFillColor(sf::Color(defocusedColour));
 	
 	logger::INFO("Defocused Pane" + std::to_string(PID) + ".");
 }
@@ -95,7 +95,7 @@ void Pane::setSize(const sf::Vector2f size)
 	titlebar.setSize(sf::Vector2f(mainpane.getLocalBounds().width, titlebar_height));
 	titlebar.setOrigin(sf::Vector2f(titlebar.getLocalBounds().width / 2, titlebar.getLocalBounds().height / 2));
 
-	titletext.setCharacterSize(titlebar.getLocalBounds().height - 8);
+	titletext.setCharacterSize(titlebar.getLocalBounds().height - 8.0f);
 	titletext.setOrigin(titletext.getLocalBounds().width / 2, titletext.getLocalBounds().height / 2);
 
 	closebutton.setFillColor(sf::Color::Red);

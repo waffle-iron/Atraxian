@@ -83,14 +83,10 @@ bool mouseIsOver(sf::Shape &object, sf::RenderWindow &window)
 void Environment::focusPane(Pane* pane)
 {
 	if (panes.size() > 1 && pane != nullPane)
-	{
-		focusedPane->active = false;
 		focusedPane->defocus();
-	}
 
 	focusedPane = pane;
 	focusedPane->focus();
-	focusedPane->active = true;
 }
 
 void Environment::main()
@@ -148,6 +144,8 @@ void Environment::main()
 										rm.removeFromQueue(&panes[i]->leftborder);
 										rm.removeFromQueue(&panes[i]->rightborder);
 										rm.removeFromQueue(&panes[i]->bottomborder);
+
+										delete panes[i];
 										panes.erase(std::remove(panes.begin(), panes.end(), panes[i]), panes.end());
 
 										logger::INFO("Removed Pane" + std::to_string(PID) + ".");
@@ -201,7 +199,6 @@ void Environment::main()
 									logger::INFO("Nothing was selected. (Not even Pane0 D:)");
 
 									focusedPane->defocus();
-									focusedPane->active = false;
 									focusedPane = nullPane;
 								}
 							}
@@ -238,9 +235,7 @@ void Environment::main()
 						taskbar->start_button.setFillColor(sf::Color::Red);
 
 //						if (!panes.empty() && focusedPane->focused == true)
-//						{
 //							focusedPane->focus(); // refocus the panel.
-//						}
 
 //						we want to refocus the pane only if it was already focused.						
 					}
@@ -274,7 +269,7 @@ void Environment::main()
 
 					focusPane(newpane);
 				}
-				else if (!panes.empty() && event.key.code == sf::Keyboard::Delete) // DELETE PANE HOTKEY
+				else if (focusedPane != nullPane && event.key.code == sf::Keyboard::Delete) // DELETE PANE HOTKEY
 				{
 					int temp_PID = focusedPane->PID;
 
@@ -285,9 +280,13 @@ void Environment::main()
 					rm.removeFromQueue(&focusedPane->leftborder);
 					rm.removeFromQueue(&focusedPane->rightborder);
 					rm.removeFromQueue(&focusedPane->bottomborder);
+
+					delete focusedPane;
 					panes.erase(std::remove(panes.begin(), panes.end(), focusedPane), panes.end()); // remove it from the stack
 
 					logger::INFO("Removed Pane" + std::to_string(temp_PID) + ".");
+
+					focusedPane = nullPane;
 				}
 			}
 		} // event loop
@@ -303,11 +302,11 @@ void Environment::main()
 			// if we are left clicking, panes exist, and are holding over the focused one, then move it to the position of the mouse. used for click and drag positioning.
 			else if (dragging_pane)
 			{
-//				sf::Vector2f move_origin;
-//				move_origin.x = sf::Mouse::getPosition(*window).x;
-//				move_origin.y = sf::Mouse::getPosition(*window).y;
+				sf::Vector2i move_origin;
+				move_origin.x = sf::Mouse::getPosition(*window).x;
+				move_origin.y = sf::Mouse::getPosition(*window).y;
 
-				focusedPane->setPosition(sf::Vector2f(sf::Mouse::getPosition(*window).x, sf::Mouse::getPosition(*window).y));
+				focusedPane->setPosition(sf::Vector2f(move_origin));
 			}
 		}
 

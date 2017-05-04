@@ -3,10 +3,12 @@
 
 #include <SFML\Graphics.hpp>
 
+class Environment;
+
 class Taskbar
 {
 public:
-	Taskbar(sf::RenderWindow *window);
+	Taskbar(Environment *environment);
 	~Taskbar();
 
 	sf::RectangleShape bar;
@@ -14,9 +16,13 @@ public:
 	sf::RectangleShape div;
 
 	bool is_start_open;
+	bool is_hidden;
 
 	void open_start_menu();
 	void close_start_menu();
+
+private:
+	Environment *environment;
 };
 
 #endif

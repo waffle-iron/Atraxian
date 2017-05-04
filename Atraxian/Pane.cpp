@@ -53,7 +53,6 @@ void Pane::setTitle(const std::string title)
 void Pane::resize(const sf::Vector2f newsize)
 {
 	setSize(newsize);
-
 	setPosition(titlebar.getPosition());
 }
 
@@ -95,8 +94,8 @@ void Pane::setSize(const sf::Vector2f size)
 	titlebar.setSize(sf::Vector2f(mainpane.getLocalBounds().width, titlebar_height));
 	titlebar.setOrigin(sf::Vector2f(titlebar.getLocalBounds().width / 2, titlebar.getLocalBounds().height / 2));
 
-	titletext.setCharacterSize(titlebar.getLocalBounds().height - 8.0f);
-	titletext.setOrigin(titletext.getLocalBounds().width / 2, titletext.getLocalBounds().height / 2);
+	titletext.setCharacterSize(static_cast<int>(titlebar.getLocalBounds().height) - 8);
+	titletext.setOrigin(sf::Vector2f(titletext.getLocalBounds().width / 2, titletext.getLocalBounds().height / 2));
 
 	closebutton.setFillColor(sf::Color::Red);
 	closebutton.setSize(sf::Vector2f(titlebar.getLocalBounds().height, titlebar.getLocalBounds().height));

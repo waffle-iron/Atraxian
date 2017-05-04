@@ -1,9 +1,9 @@
-#include "Environment.hpp"
 #include "Logger.hpp"
+#include "Environment.hpp"
+#include "Filesystem.hpp"
 #include "Renderer.hpp"
 #include "Taskbar.hpp"
 #include "Pane.hpp"
-#include "Filesystem.hpp"
 
 #include <ctime>
 
@@ -43,18 +43,19 @@ namespace environment
 
 //---------- CLASS ----------
 
-Environment::Environment(sf::VideoMode dimensions, std::string title)
+Environment::Environment(sf::VideoMode dimensions, std::string title, int envID)
 {
 	if (!environment::filesystem::exists("Atraxian.exe"))
 		logger::WARNING("Atraxian is not running from a supported environment.");
 
 	logger::INFO("Creating new Environment instance...");
+	environmentID = envID;
 
 	window = new sf::RenderWindow;
-	window->create(dimensions, title, sf::Style::Close | sf::Style::Titlebar);
+	window->create(dimensions, (title + " (" + std::to_string(envID) + ")"), sf::Style::Close | sf::Style::Titlebar);
 	window->setFramerateLimit(60);
 
-	taskbar = new Taskbar(window);
+	taskbar = new Taskbar(this);
 
 	nullPane = new Pane(sf::Vector2f(0, 0), "null", 0, window);
 
@@ -80,7 +81,7 @@ bool mouseIsOver(sf::Shape &object, sf::RenderWindow &window)
 		return false;
 }
 
-void Environment::focusPane(Pane* pane)
+void Environment::switchFocusedPaneTo(Pane* pane)
 {
 	if (panes.size() > 1 && pane != nullPane)
 		focusedPane->defocus();
@@ -91,7 +92,7 @@ void Environment::focusPane(Pane* pane)
 
 void Environment::main()
 {
-	Renderer rm(window);
+	Renderer rm(this->window);
 
 	rm.addToQueue(&taskbar->bar);
 	rm.addToQueue(&taskbar->start_button);
@@ -112,7 +113,7 @@ void Environment::main()
 				return;
 			}
 
-			if (event.type == sf::Event::EventType::MouseButtonPressed)
+			else if (event.type == sf::Event::EventType::MouseButtonPressed)
 			{
 				if (event.key.code == sf::Mouse::Left)
 				{
@@ -135,8 +136,6 @@ void Environment::main()
 									{
 										logger::INFO("Clicked the close button of Pane" + std::to_string(panes[i]->PID));
 
-										const int PID = panes[i]->PID;
-
 										rm.removeFromQueue(&panes[i]->titletext);
 										rm.removeFromQueue(&panes[i]->titlebar);
 										rm.removeFromQueue(&panes[i]->mainpane);
@@ -147,9 +146,6 @@ void Environment::main()
 
 										delete panes[i];
 										panes.erase(std::remove(panes.begin(), panes.end(), panes[i]), panes.end());
-
-										logger::INFO("Removed Pane" + std::to_string(PID) + ".");
-
 										break;
 									}
 									else
@@ -170,7 +166,7 @@ void Environment::main()
 								{
 									logger::INFO("Pane" + std::to_string(focusedPane->PID) + " was not already focused.");
 
-									focusPane(panes[i]);
+									switchFocusedPaneTo(panes[i]);
 									selected = true;
 
 									logger::INFO("Bringing Pane" + std::to_string(focusedPane->PID) + " to the top of the Render Queue.");
@@ -224,7 +220,7 @@ void Environment::main()
 				}
 			}
 
-			if (event.type == sf::Event::EventType::MouseButtonReleased)
+			else if (event.type == sf::Event::EventType::MouseButtonReleased)
 			{
 				if (mouseIsOver(taskbar->bar, *window))
 				{
@@ -249,7 +245,7 @@ void Environment::main()
 				}
 			}
 
-			if (event.type == sf::Event::EventType::KeyPressed)
+			else if (event.type == sf::Event::EventType::KeyPressed)
 			{
 				if (event.key.code == sf::Keyboard::Key::N) // NEW PANE HOTKEY
 				{
@@ -267,12 +263,10 @@ void Environment::main()
 					rm.addToQueue(&newpane->titletext);
 					panes.push_back(newpane); // add it to the stack
 
-					focusPane(newpane);
+					switchFocusedPaneTo(newpane);
 				}
 				else if (focusedPane != nullPane && event.key.code == sf::Keyboard::Key::Delete) // DELETE PANE HOTKEY
 				{
-					int temp_PID = focusedPane->PID;
-
 					rm.removeFromQueue(&focusedPane->titletext);
 					rm.removeFromQueue(&focusedPane->titlebar);
 					rm.removeFromQueue(&focusedPane->mainpane);
@@ -283,9 +277,6 @@ void Environment::main()
 
 					delete focusedPane;
 					panes.erase(std::remove(panes.begin(), panes.end(), focusedPane), panes.end()); // remove it from the stack
-
-					logger::INFO("Removed Pane" + std::to_string(temp_PID) + ".");
-
 					focusedPane = nullPane;
 				}
 			}

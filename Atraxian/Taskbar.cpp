@@ -1,12 +1,14 @@
 #include "Taskbar.hpp"
 #include "logger.hpp"
 
-Taskbar::Taskbar(sf::RenderWindow *window)
+#include "Environment.hpp"
+
+Taskbar::Taskbar(Environment *environment)
 {
 	bar.setFillColor(sf::Color::White); // TODO: USERF:CUSTOMISE
-	bar.setSize(sf::Vector2f(window->getSize().x, 40.0f)); // as long as the window, and 40 pixels high
+	bar.setSize(sf::Vector2f(static_cast<int>(environment->window->getSize().x), 40)); // as long as the window, and 40 pixels high
 	bar.setOrigin(bar.getSize().x / 2.0f, bar.getSize().y / 2.0f); // center it
-	bar.setPosition(window->getSize().x / 2.0f, (window->getSize().y - (bar.getLocalBounds().height / 2.0f)));
+	bar.setPosition(environment->window->getSize().x / 2.0f, (environment->window->getSize().y - (bar.getLocalBounds().height / 2.0f)));
 
 	start_button.setFillColor(sf::Color::Red);
 	start_button.setSize(sf::Vector2f(40, 40));
@@ -28,13 +30,11 @@ Taskbar::~Taskbar()
 void Taskbar::open_start_menu()
 {
 	is_start_open = true;
-
 	start_button.setFillColor(sf::Color::Green);
 }
 
 void Taskbar::close_start_menu()
 {
 	is_start_open = false;
-
 	start_button.setFillColor(sf::Color::Red);
 }

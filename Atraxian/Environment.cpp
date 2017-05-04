@@ -104,7 +104,7 @@ void Environment::main()
 		sf::Event event;
 		while (window->pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
+			if (event.type == sf::Event::EventType::Closed)
 			{
 				panes.clear();
 				rm.clearQueue();
@@ -112,7 +112,7 @@ void Environment::main()
 				return;
 			}
 
-			if (event.type == sf::Event::MouseButtonPressed)
+			if (event.type == sf::Event::EventType::MouseButtonPressed)
 			{
 				if (event.key.code == sf::Mouse::Left)
 				{
@@ -224,7 +224,7 @@ void Environment::main()
 				}
 			}
 
-			if (event.type == sf::Event::MouseButtonReleased)
+			if (event.type == sf::Event::EventType::MouseButtonReleased)
 			{
 				if (mouseIsOver(taskbar->bar, *window))
 				{
@@ -249,9 +249,9 @@ void Environment::main()
 				}
 			}
 
-			if (event.type == sf::Event::KeyPressed)
+			if (event.type == sf::Event::EventType::KeyPressed)
 			{
-				if (event.key.code == sf::Keyboard::N) // NEW PANE HOTKEY
+				if (event.key.code == sf::Keyboard::Key::N) // NEW PANE HOTKEY
 				{
 					const int PID = panes.size() + 1;
 					Pane* newpane = new Pane(sf::Vector2f(200, 300), "Pane" + std::to_string(PID), PID, window);
@@ -269,7 +269,7 @@ void Environment::main()
 
 					focusPane(newpane);
 				}
-				else if (focusedPane != nullPane && event.key.code == sf::Keyboard::Delete) // DELETE PANE HOTKEY
+				else if (focusedPane != nullPane && event.key.code == sf::Keyboard::Key::Delete) // DELETE PANE HOTKEY
 				{
 					int temp_PID = focusedPane->PID;
 
@@ -293,7 +293,7 @@ void Environment::main()
 
 		{
 			// if we are holding the left alt key and space at the same time, and there is at least one pane, center it.
-			if (!panes.empty() && sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt) && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			if (!panes.empty() && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LAlt) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
 			{
 				focusedPane->setPosition(sf::Vector2f(window->getView().getCenter()));
 

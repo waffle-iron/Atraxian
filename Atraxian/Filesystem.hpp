@@ -3,22 +3,23 @@
 
 #include <string>
 
-namespace environment
+namespace environment {
+
+namespace filesystem
 {
-	namespace filesystem
-	{
-		bool exists(std::string thing_that_may_or_may_not_be_real);
+	bool exists(std::string thing_that_may_or_may_not_be_real);
 
-		bool create_dir(std::string name, std::string dir);
+	bool create_dir(std::string name, std::string dir);
 
-		bool create_file(std::string name, std::string dir);
+	bool create_file(std::string name, std::string dir);
 
-		bool move(std::string from, std::string to);
+	bool move(std::string from, std::string to);
 
-		bool remove(std::string thing_to_remove);
+	bool remove(std::string thing_to_remove);
 
-		bool rename(std::string dir, std::string file, std::string newname);
-	}
+	bool rename(std::string dir, std::string file, std::string newname);
 }
 
-#endif
+}
+
+#endif /* FILESYSTEM_HPP */

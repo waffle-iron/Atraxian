@@ -25,4 +25,4 @@ private:
 	Environment *environment;
 };
 
-#endif
+#endif /* TASKBAR_HPP */

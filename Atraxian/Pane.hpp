@@ -36,4 +36,4 @@ private:
 	void setSize(const sf::Vector2f size);
 };
 
-#endif
+#endif /* PANE_HPP */

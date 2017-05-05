@@ -18,4 +18,4 @@ namespace logger
 	void BREAK();
 }
 
-#endif
+#endif /* LOGGER_HPP */

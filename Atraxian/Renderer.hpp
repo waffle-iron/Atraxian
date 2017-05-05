@@ -22,4 +22,4 @@ private:
 	std::vector<sf::Drawable*> render_queue;
 };
 
-#endif
+#endif /* RENDERER_HPP */

@@ -73,11 +73,9 @@ Environment::Environment(sf::VideoMode dimensions, std::string title, int envID)
 
 	taskbar = new Taskbar(this);
 
-	nullPane = new Pane(sf::Vector2f(0, 0), "null", 0, window);
+	nullPane = new Pane(sf::Vector2f(0, 0), "null", 0, this);
 
 	logger::INFO("New Environment instance created.");
-
-	parser::loadApp("root//apps//test");
 }
 
 Environment::~Environment()
@@ -273,8 +271,11 @@ void Environment::main()
 			{
 				if (event.key.code == sf::Keyboard::Key::N) // NEW PANE HOTKEY
 				{
+					parser::loadApp("root//apps//test");
+
+					/*
 					const int PID = panes.size() + 1;
-					Pane* newpane = new Pane(sf::Vector2f(200, 300), "Pane" + std::to_string(PID), PID, window);
+					Pane* newpane = new Pane(sf::Vector2f(200, 300), "Pane" + std::to_string(PID), PID, this);
 
 //					rm.addToQueue(&newpane->boundingbox);
 					rm.addToQueue(&newpane->titletext);
@@ -288,6 +289,7 @@ void Environment::main()
 					panes.push_back(newpane); // add it to the stack
 
 					switchFocusedPaneTo(newpane);
+					*/
 				}
 				else if (focusedPane != nullPane && event.key.code == sf::Keyboard::Key::Delete) // DELETE PANE HOTKEY
 				{

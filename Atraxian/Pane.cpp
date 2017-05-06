@@ -5,9 +5,8 @@
 const float titlebar_height = 32.0f;
 const float border_width = 6.25f;
 
-Pane::Pane(const sf::Vector2f size, const std::string title, const int pid, sf::RenderWindow *window_)
+Pane::Pane(const sf::Vector2f size, const std::string title, const int pid, Environment *env)
 {
-	window = window_;
 	PID = pid;
 
 	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
@@ -16,7 +15,7 @@ Pane::Pane(const sf::Vector2f size, const std::string title, const int pid, sf::
 
 	setSize(size);
 
-	setPosition(window->getView().getCenter());
+	setPosition(env->window->getView().getCenter());
 	
 	logger::INFO("Pane" + std::to_string(pid) + " created");
 }

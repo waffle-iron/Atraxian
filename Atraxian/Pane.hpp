@@ -1,13 +1,16 @@
 #ifndef PANE_HPP
 #define PANE_HPP
 
+#include "Environment.hpp"
+
 #include <SFML\Graphics.hpp>
+#include <vector>
 
 class Pane
 {
 public:
-	Pane(const sf::Vector2f size, const std::string title, const int pid, sf::RenderWindow *window);
-	virtual ~Pane();
+	Pane(const sf::Vector2f size, const std::string title, const int pid, Environment *env);
+	~Pane();
 
 	sf::RectangleShape mainpane;
 	sf::RectangleShape titlebar;
@@ -29,8 +32,10 @@ public:
 	void focus();
 	void defocus();
 
+	std::vector<sf::Drawable*> pane_content;
+
 private:
-	sf::RenderWindow *window;
+	Environment *environment;
 	sf::Font font;
 	
 	void setSize(const sf::Vector2f size);

@@ -5,14 +5,7 @@
 
 namespace parser
 {
-	int getInfo(std::string thing);
+	bool loadApp(std::string appdir);
 }
-
-class MapleParser
-{
-public:
-	MapleParser();
-	~MapleParser();
-};
 
 #endif /* MAPLE_PARSER_HPP */

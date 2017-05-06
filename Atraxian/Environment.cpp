@@ -77,7 +77,7 @@ Environment::Environment(sf::VideoMode dimensions, std::string title, int envID)
 
 	logger::INFO("New Environment instance created.");
 
-	parser::getInfo("root//apps//test.maple");
+	parser::loadApp("root//apps//test");
 }
 
 Environment::~Environment()

@@ -4,27 +4,24 @@
 
 namespace parser
 {
-	int getInfo(std::string thing)
+	bool loadApp(std::string appdir)
 	{
-		if (environment::filesystem::exists(thing))
+		if (environment::filesystem::exists(appdir))
 		{
-			logger::CUSTOM("MAPLE", "the thing does exist!");
-			return 1;
+			std::string dir = appdir + "//";
+
+			if (environment::filesystem::exists(dir + "main.mpl"))
+			{
+				logger::CUSTOM("MAPLE", "Found main.mpl for " + appdir + ".");
+
+				return 1;
+			}
 		}
 		else
 		{
-			logger::CUSTOM("MAPLE", "the thing does not exist!");
+			logger::CUSTOM("MAPLE", "Could not find main.mpl for " + appdir + ".");
+
 			return 0;
 		}
 	}
-}
-
-MapleParser::MapleParser()
-{
-
-}
-
-MapleParser::~MapleParser()
-{
-
 }

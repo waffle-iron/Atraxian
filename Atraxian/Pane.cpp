@@ -1,28 +1,34 @@
 #include "Environment.hpp"
+#include "Renderer.hpp"
 #include "Pane.hpp"
 #include "logger.hpp"
 
 const float titlebar_height = 32.0f;
 const float border_width = 6.25f;
 
-Pane::Pane(const sf::Vector2f size, const std::string title, const int pid, Environment *env)
+Pane::Pane(const sf::Vector2f size, const std::string title, Environment *env)
 {
-	PID = pid;
+	environment = env;
 
+	PID = env->panes.size() + 1;
 	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
 	titletext.setFont(font);
 	titletext.setString(title);
-
 	setSize(size);
-
 	setPosition(env->window->getView().getCenter());
-	
-	logger::INFO("Pane" + std::to_string(pid) + " created");
+
+	setVisible(true);
+
+	logger::INFO(title + " created. (Pane" + std::to_string(PID) + ")");
 }
 
 Pane::~Pane()
 {
-	logger::INFO("Pane " + std::to_string(PID) + " destroyed.");
+	logger::INFO("Destroying Pane" + std::to_string(PID) + ".");
+
+	setVisible(false);
+
+	logger::INFO("Destroyed Pane" + std::to_string(PID) + ".");
 }
 
 const sf::Color focusedColour(109, 109, 109);
@@ -64,7 +70,7 @@ void Pane::focus()
 	rightborder.setFillColor(sf::Color(focusedColour));
 	bottomborder.setFillColor(sf::Color(focusedColour));
 
-	logger::INFO("Focused Pane" + std::to_string(PID) + ".");
+	logger::INFO("Pane" + std::to_string(PID) + " focused.");
 }
 
 void Pane::defocus()
@@ -76,7 +82,39 @@ void Pane::defocus()
 	rightborder.setFillColor(sf::Color(defocusedColour));
 	bottomborder.setFillColor(sf::Color(defocusedColour));
 	
-	logger::INFO("Defocused Pane" + std::to_string(PID) + ".");
+	logger::INFO("Pane" + std::to_string(PID) + " defocused.");
+}
+
+void Pane::setVisible(bool yesno)
+{
+	if (yesno)
+	{
+		environment->renderer->addToQueue(&boundingbox);
+		environment->renderer->addToQueue(&titletext);
+		environment->renderer->addToQueue(&titlebar);
+		environment->renderer->addToQueue(&closebutton);
+		environment->renderer->addToQueue(&mainpane);
+		environment->renderer->addToQueue(&leftborder);
+		environment->renderer->addToQueue(&rightborder);
+		environment->renderer->addToQueue(&bottomborder);
+		environment->renderer->addToQueue(&titletext);
+
+		visible = true;
+	}
+	else
+	{
+		environment->renderer->removeFromQueue(&boundingbox);
+		environment->renderer->removeFromQueue(&titletext);
+		environment->renderer->removeFromQueue(&titlebar);
+		environment->renderer->removeFromQueue(&closebutton);
+		environment->renderer->removeFromQueue(&mainpane);
+		environment->renderer->removeFromQueue(&leftborder);
+		environment->renderer->removeFromQueue(&rightborder);
+		environment->renderer->removeFromQueue(&bottomborder);
+		environment->renderer->removeFromQueue(&titletext);
+
+		visible = false;
+	}
 }
 
 // PRIVATE

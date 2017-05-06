@@ -3,6 +3,7 @@
 
 #include <SFML\Graphics\RenderWindow.hpp>
 
+class Renderer;
 class Taskbar;
 class Pane;
 
@@ -21,14 +22,15 @@ public:
 
 	int environmentID;
 
+	std::vector<Pane*> panes;
 	sf::RenderWindow *window;
+	Renderer *renderer;
 	Taskbar *taskbar;
 
 	void main();
 	void switchFocusedPaneTo(Pane* pane);
 
 private:
-	std::vector<Pane*> panes;
 	Pane *nullPane;
 	Pane *focusedPane = nullPane;
 };

@@ -1,9 +1,10 @@
+#include "Environment.hpp"
 #include "Renderer.hpp"
 #include "logger.hpp"
 
-Renderer::Renderer(sf::RenderWindow *target_window)
+Renderer::Renderer(Environment *target_env)
 {
-	window = target_window;
+	environment = target_env;
 
 	logger::INFO("New Renderer instance created.");
 }
@@ -50,7 +51,7 @@ void Renderer::render()
 	{
 		for (size_t i = 0; i < render_queue.size(); i++)
 		{
-			window->draw(*render_queue[i]);
+			environment->window->draw(*render_queue[i]);
 		}
 	}
 }

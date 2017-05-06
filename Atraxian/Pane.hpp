@@ -5,12 +5,15 @@
 
 #include <SFML\Graphics.hpp>
 #include <vector>
+#include <string>
 
 class Pane
 {
 public:
-	Pane(const sf::Vector2f size, const std::string title, const int pid, Environment *env);
+	Pane(const sf::Vector2f size, const std::string title, Environment *env);
 	~Pane();
+
+	std::string name;
 
 	sf::RectangleShape mainpane;
 	sf::RectangleShape titlebar;
@@ -31,8 +34,7 @@ public:
 	void resize(const sf::Vector2f newsize);
 	void focus();
 	void defocus();
-
-	std::vector<sf::Drawable*> pane_content;
+	void setVisible(bool yesno);
 
 private:
 	Environment *environment;

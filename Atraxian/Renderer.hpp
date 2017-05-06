@@ -2,13 +2,14 @@
 #define RENDERER_HPP
 
 #include <SFML\Graphics.hpp>
-
 #include <vector>
+
+class Environment;
 
 class Renderer
 {
 public:
-	Renderer(sf::RenderWindow *target_window);
+	Renderer(Environment *target_env);
 	~Renderer();
 
 	void addToQueue(sf::Drawable *object);
@@ -18,7 +19,7 @@ public:
 	void render();
 
 private:
-	sf::RenderWindow *window;
+	Environment *environment;
 	std::vector<sf::Drawable*> render_queue;
 };
 

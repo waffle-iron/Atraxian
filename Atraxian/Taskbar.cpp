@@ -6,7 +6,7 @@
 Taskbar::Taskbar(Environment *environment)
 {
 	bar.setFillColor(sf::Color::White); // TODO: USERF:CUSTOMISE
-	bar.setSize(sf::Vector2f(static_cast<int>(environment->window->getSize().x), 40)); // as long as the window, and 40 pixels high
+	bar.setSize(sf::Vector2f(environment->window->getSize().x, 40.0f)); // as long as the window, and 40 pixels high
 	bar.setOrigin(bar.getSize().x / 2.0f, bar.getSize().y / 2.0f); // center it
 	bar.setPosition(environment->window->getSize().x / 2.0f, (environment->window->getSize().y - (bar.getLocalBounds().height / 2.0f)));
 

@@ -1,7 +1,7 @@
 #ifndef ENVIRONMENT_HPP
 #define ENVIRONMENT_HPP
 
-#include <SFML\Graphics.hpp>
+#include <SFML\Graphics\RenderWindow.hpp>
 
 class Taskbar;
 class Pane;
@@ -31,6 +31,6 @@ private:
 	Pane *focusedPane = nullPane;
 };
 
-const std::string ENVIRONMENT_VERSION("0.0.6");
+const std::string ENVIRONMENT_VERSION("0.0.61");
 
 #endif /* ENVIRONMENT_HPP*/

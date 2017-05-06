@@ -1,7 +1,7 @@
-#include <SFML\Graphics.hpp>
-
 #include "Environment.hpp"
 #include "Logger.hpp"
+
+#include <SFML\Graphics\RenderWindow.hpp>
 
 #include <iostream>
 #include <thread>

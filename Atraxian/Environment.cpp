@@ -122,7 +122,8 @@ void Environment::main()
 						bool selected(false);
 						bool already_selected(false);
 
-						for (int i = panes.size() - 1; i >= 0; i--) // all the panes, from the newest to the oldest.
+						// if we clicked on any pane
+						for (int i = panes.size() - 1; i >= 0; i--)
 						{
 							if (mouseIsOver(panes[i]->boundingbox, *window)) // check if we're in the pane
 							{
@@ -196,6 +197,10 @@ void Environment::main()
 
 									focusedPane->defocus();
 									focusedPane = nullPane;
+								}
+								else
+								{
+									logger::INFO("No pane was already selected.");
 								}
 							}
 							else
@@ -288,7 +293,7 @@ void Environment::main()
 			{
 				focusedPane->setPosition(sf::Vector2f(window->getView().getCenter()));
 
-				logger::INFO("Centered Pane" + std::to_string(focusedPane->PID) + ".");
+				logger::INFO("Pane" + std::to_string(focusedPane->PID) + " centered.");
 			}
 			// if we are left clicking, panes exist, and are holding over the focused one, then move it to the position of the mouse. used for click and drag positioning.
 			else if (dragging_pane)

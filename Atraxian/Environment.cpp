@@ -4,6 +4,7 @@
 #include "Renderer.hpp"
 #include "Taskbar.hpp"
 #include "Pane.hpp"
+#include "MapleParser.hpp"
 
 #include <ctime>
 
@@ -75,6 +76,8 @@ Environment::Environment(sf::VideoMode dimensions, std::string title, int envID)
 	nullPane = new Pane(sf::Vector2f(0, 0), "null", 0, window);
 
 	logger::INFO("New Environment instance created.");
+
+	parser::getInfo("root//apps//test.maple");
 }
 
 Environment::~Environment()

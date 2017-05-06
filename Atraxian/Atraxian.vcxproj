@@ -75,12 +75,12 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../SFML/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../SFML/include;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>SFML_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile />
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>../SFML/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../SFML/lib;</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;opengl32.lib;freetype.lib;jpeg.lib;winmm.lib;gdi32.lib;sfml-audio-s-d.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;sfml-network-s-d.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -136,8 +136,9 @@
   <ItemGroup>
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Filesystem.cpp" />
-    <ClCompile Include="logger.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MapleParser.cpp" />
     <ClCompile Include="Pane.cpp" />
     <ClCompile Include="Renderer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
@@ -147,7 +148,8 @@
   <ItemGroup>
     <ClInclude Include="Environment.hpp" />
     <ClInclude Include="Filesystem.hpp" />
-    <ClInclude Include="logger.hpp" />
+    <ClInclude Include="Logger.hpp" />
+    <ClInclude Include="MapleParser.hpp" />
     <ClInclude Include="Pane.hpp" />
     <ClInclude Include="Renderer.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>

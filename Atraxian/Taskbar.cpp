@@ -19,6 +19,11 @@ Taskbar::Taskbar(Environment *environment)
 	div.setPosition(start_button.getPosition().x + start_button.getLocalBounds().width / 2 + div.getLocalBounds().width, bar.getPosition().y - div.getLocalBounds().height / 2);
 	div.setFillColor(sf::Color::Black);
 
+//	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
+//	time.setCharacterSize(bar.getLocalBounds().height - 16.0f);
+//	time.setFillColor(sf::Color::Black);
+//	time.setFont(font);
+
 	logger::INFO("New taskbar created.");
 }
 

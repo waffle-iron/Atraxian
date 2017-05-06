@@ -14,6 +14,7 @@ public:
 	sf::RectangleShape bar;
 	sf::RectangleShape start_button;
 	sf::RectangleShape div;
+//	sf::Text time;
 
 	bool is_start_open;
 	bool is_hidden;
@@ -23,6 +24,7 @@ public:
 
 private:
 	Environment *environment;
+//	sf::Font font;
 };
 
 #endif /* TASKBAR_HPP */

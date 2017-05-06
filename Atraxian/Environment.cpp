@@ -39,20 +39,35 @@ namespace environment
 
 		return timestamp;
 	}
+
+	bool fs_ready()
+	{
+		if (filesystem::exists(".//root"))
+			return true;
+		else
+			return false;
+	}
+
+	void ready_fs()
+	{
+		filesystem::create_dir("root", ".//");
+	}
 } // enviroment
 
 //---------- CLASS ----------
 
 Environment::Environment(sf::VideoMode dimensions, std::string title, int envID)
 {
-	if (!environment::filesystem::exists("Atraxian.exe"))
-		logger::WARNING("Atraxian is not running from a supported environment.");
+	if (!environment::fs_ready())
+		environment::ready_fs();
+
+	logger::setOutputDir("root", ("environment" + std::to_string(envID)));
 
 	logger::INFO("Creating new Environment instance...");
 	environmentID = envID;
 
 	window = new sf::RenderWindow;
-	window->create(dimensions, (title + " (" + std::to_string(envID) + ")"), sf::Style::Close | sf::Style::Titlebar);
+	window->create(dimensions, (title + " (" + std::to_string(envID) + ")"), (sf::Style::Close | sf::Style::Titlebar));
 	window->setFramerateLimit(60);
 
 	taskbar = new Taskbar(this);
@@ -97,6 +112,7 @@ void Environment::main()
 	rm.addToQueue(&taskbar->bar);
 	rm.addToQueue(&taskbar->start_button);
 	rm.addToQueue(&taskbar->div);
+//	rm.addToQueue(&taskbar->time);
 
 	bool dragging_pane(false);
 	
@@ -305,6 +321,10 @@ void Environment::main()
 				focusedPane->setPosition(sf::Vector2f(move_origin));
 			}
 		}
+
+//		taskbar->time.setString(environment::getTimestamp());
+//		taskbar->time.setOrigin(sf::Vector2f(taskbar->time.getLocalBounds().width / 2, taskbar->time.getLocalBounds().height / 2));
+//		taskbar->time.setPosition(sf::Vector2f((taskbar->bar.getPosition().x * 2) - (taskbar->time.getLocalBounds().width / 1.7), taskbar->bar.getPosition().y - (taskbar->time.getLocalBounds().height / 2.5)));
 
 		window->clear(sf::Color::Blue);
 		rm.render();

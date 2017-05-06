@@ -4,9 +4,11 @@
 #include <iostream>
 #include <string>
 
+std::string write_dir = "environment_default.log";
+
 void write_log(const std::string output)
 {
-	std::ofstream log("environment.log", std::ios::app);
+	std::ofstream log((write_dir), std::ios::app);
 
 	if (log.is_open())
 	{
@@ -51,9 +53,17 @@ namespace logger
 		write_log(output);
 	}
 
-	void SILENT(std::string output, std::string type)
+	void SILENT(std::string type, std::string output)
 	{
 		output = environment::getTimestamp() + " " + type + ": " + output;
+
+		write_log(output);
+	}
+
+	void CUSTOM(std::string type, std::string output)
+	{
+		output = environment::getTimestamp() + " " + type + ": " + output;
+		std::cout << output << std::endl;
 
 		write_log(output);
 	}
@@ -61,5 +71,15 @@ namespace logger
 	void BREAK()
 	{
 		std::cout << std::endl;
+	}
+
+	void setOutputDir(const std::string dir)
+	{
+		write_dir = dir;
+	}
+
+	void setOutputDir(const std::string dir, const std::string filename)
+	{
+		write_dir = dir + "//" + filename + ".log";
 	}
 }

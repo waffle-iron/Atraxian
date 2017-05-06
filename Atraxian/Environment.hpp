@@ -9,6 +9,8 @@ class Pane;
 namespace environment
 {
 	std::string getTimestamp();
+
+	bool fs_ready();
 }
 
 class Environment
@@ -31,6 +33,6 @@ private:
 	Pane *focusedPane = nullPane;
 };
 
-const std::string ENVIRONMENT_VERSION("0.0.61");
+const std::string ENVIRONMENT_VERSION("0.0.642");
 
 #endif /* ENVIRONMENT_HPP*/

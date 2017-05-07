@@ -7,13 +7,6 @@ class Renderer;
 class Taskbar;
 class Pane;
 
-namespace environment
-{
-	std::string getTimestamp();
-
-	bool fs_ready();
-}
-
 class Environment
 {
 public:

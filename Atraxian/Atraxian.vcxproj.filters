@@ -40,6 +40,9 @@
     <ClCompile Include="MapleParser.cpp">
       <Filter>Source Files\Environment\Pane</Filter>
     </ClCompile>
+    <ClCompile Include="Util.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Environment.hpp">
@@ -62,6 +65,9 @@
     </ClInclude>
     <ClInclude Include="MapleParser.hpp">
       <Filter>Source Files\Environment\Pane</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.hpp">
+      <Filter>Source Files\Environment</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

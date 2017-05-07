@@ -1,4 +1,5 @@
 #include "Environment.hpp"
+#include "Util.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -31,7 +32,7 @@ namespace logger
 {
 	void INFO(std::string output)
 	{
-		output = environment::getTimestamp() + " INFO: " + output;
+		output = environment::util::getTimestamp() + " INFO: " + output;
 
 		std::cout << output << std::endl;
 		write_log(output);
@@ -39,7 +40,7 @@ namespace logger
 
 	void WARNING(std::string output)
 	{
-		output = environment::getTimestamp() + " WARNING: " + output;
+		output = environment::util::getTimestamp() + " WARNING: " + output;
 		std::cout << output << std::endl;
 
 		write_log(output);
@@ -47,7 +48,7 @@ namespace logger
 
 	void ERROR(std::string output)
 	{
-		output = environment::getTimestamp() + " ERROR: " + output;
+		output = environment::util::getTimestamp() + " ERROR: " + output;
 		std::cout << output << std::endl;
 
 		write_log(output);
@@ -55,14 +56,14 @@ namespace logger
 
 	void SILENT(std::string type, std::string output)
 	{
-		output = environment::getTimestamp() + " " + type + ": " + output;
+		output = environment::util::getTimestamp() + " " + type + ": " + output;
 
 		write_log(output);
 	}
 
 	void CUSTOM(std::string type, std::string output)
 	{
-		output = environment::getTimestamp() + " " + type + ": " + output;
+		output = environment::util::getTimestamp() + " " + type + ": " + output;
 		std::cout << output << std::endl;
 
 		write_log(output);

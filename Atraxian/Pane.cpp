@@ -6,28 +6,26 @@
 const float titlebar_height = 32.0f;
 const float border_width = 6.25f;
 
-Pane::Pane(const sf::Vector2f size, const std::string title, Environment *env)
+Pane::Pane(const sf::Vector2f size, const std::string $title, Environment *env)
 {
 	environment = env;
+	title = $title;
 
 	PID = env->panes.size() + 1;
 	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
 	titletext.setFont(font);
-	titletext.setString(title);
 	setSize(size);
 	setPosition(env->window->getView().getCenter());
+	setTitle(title);
 
 	setVisible(true);
 
-	logger::INFO(title + " created. (Pane" + std::to_string(PID) + ")");
+	logger::INFO("'" + title + "' created. (Pane" + std::to_string(PID) + ")");
 }
 
 Pane::~Pane()
 {
-	logger::INFO("Destroying Pane" + std::to_string(PID) + ".");
-
 	setVisible(false);
-
 	logger::INFO("Destroyed Pane" + std::to_string(PID) + ".");
 }
 
@@ -37,7 +35,13 @@ const sf::Color defocusedColour(190, 190, 190);
 void Pane::setPosition(const sf::Vector2f newpos)
 {
 	titlebar.setPosition(newpos);
-	titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 2);
+
+	//	g j p q y q
+	if (title.find('p') != std::string::npos)
+		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2));
+	else
+		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) - 2);
+
 	mainpane.setPosition(titlebar.getPosition().x, titlebar.getPosition().y + mainpane.getLocalBounds().height / 2 + (titlebar.getLocalBounds().height / 2));
 	closebutton.setPosition((titlebar.getPosition().x + titlebar.getLocalBounds().width / 2) - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y);
 	leftborder.setPosition((mainpane.getPosition().x - mainpane.getLocalBounds().width / 2) - leftborder.getLocalBounds().width / 2, mainpane.getPosition().y - titlebar.getLocalBounds().height / 2);
@@ -50,9 +54,12 @@ void Pane::setTitle(const std::string title)
 {
 	titletext.setString(title);
 	titletext.setOrigin(titletext.getLocalBounds().width / 2, titletext.getLocalBounds().height / 2);
-	titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 2);
 
-	titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 2);
+	//	g j p q y q
+	if (title.find('p') != std::string::npos)
+		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2));
+	else
+		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) - 2);
 }
 
 void Pane::resize(const sf::Vector2f newsize)

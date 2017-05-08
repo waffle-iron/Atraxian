@@ -13,7 +13,7 @@ public:
 	Pane(const sf::Vector2f size, const std::string title, Environment *env);
 	~Pane();
 
-	std::string name;
+	std::string title;
 
 	sf::RectangleShape mainpane;
 	sf::RectangleShape titlebar;

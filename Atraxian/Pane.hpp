@@ -4,12 +4,14 @@
 #include "Environment.hpp"
 
 #include <SFML\Graphics.hpp>
+
 #include <vector>
 #include <string>
 
 class Pane
 {
 public:
+	Pane(std::string app_name, Environment *env);
 	Pane(const sf::Vector2f size, const std::string title, Environment *env);
 	~Pane();
 

@@ -2,11 +2,33 @@
 #include "Renderer.hpp"
 #include "Pane.hpp"
 #include "Logger.hpp"
+#include "MapleParser.hpp"
 
 const float titlebar_height = 32.0f;
 const float border_width = 6.25f;
 
-Pane::Pane(const sf::Vector2f size, const std::string $title, Environment *env)
+Pane::Pane(std::string app_name, Environment *env)
+{
+	MapleParser app(app_name);
+
+	environment = env;
+	PID = env->panes.size() + 1;
+
+	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
+	titletext.setFont(font);
+	title = app.app_name;
+//	setTitle(title); // because it relies on setPos
+
+	setSize(app.app_dimensions);
+	setPosition(env->window->getView().getCenter());
+	setTitle(title); // because it relies on setPos
+
+	setVisible(true);
+
+	logger::INFO("\"" + title + "\" created. (Pane" + std::to_string(PID) + ")");
+}
+
+Pane::Pane(const sf::Vector2f size, const std::string $title, Environment *env) // THIS METHOD SHOULD BE USED FOR DEBUGGING ONLY.
 {
 	environment = env;
 	title = $title;
@@ -38,9 +60,9 @@ void Pane::setPosition(const sf::Vector2f newpos)
 
 	//	g j p q y
 	if (title.find('p') != std::string::npos)
-		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2));
+		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 6);
 	else
-		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) - 2);
+		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 2);
 
 	mainpane.setPosition(titlebar.getPosition().x, titlebar.getPosition().y + mainpane.getLocalBounds().height / 2 + (titlebar.getLocalBounds().height / 2));
 	closebutton.setPosition((titlebar.getPosition().x + titlebar.getLocalBounds().width / 2) - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y);
@@ -50,15 +72,20 @@ void Pane::setPosition(const sf::Vector2f newpos)
 	boundingbox.setPosition(mainpane.getPosition().x, mainpane.getPosition().y - ((titlebar.getLocalBounds().height / 2) - (bottomborder.getLocalBounds().height / 2)));
 }
 
-void Pane::setTitle(const std::string title)
+void Pane::setTitle(const std::string new_title)
 {
-	titletext.setString(title);
+	titletext.setString(new_title);
 	titletext.setOrigin(titletext.getLocalBounds().width / 2, titletext.getLocalBounds().height / 2);
 
-	if (title.find('p') != std::string::npos)
-		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2));
+	if (new_title.find('p') != std::string::npos ||
+		new_title.find('g') != std::string::npos ||
+		new_title.find('j') != std::string::npos ||
+		new_title.find('q') != std::string::npos ||
+		new_title.find('y') != std::string::npos)
+
+		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 6);
 	else
-		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) - 2);
+		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2) + 2);
 }
 
 void Pane::resize(const sf::Vector2f newsize)
@@ -96,28 +123,26 @@ void Pane::setVisible(bool yesno)
 	if (yesno)
 	{
 		environment->renderer->addToQueue(&boundingbox);
-		environment->renderer->addToQueue(&titletext);
 		environment->renderer->addToQueue(&titlebar);
+		environment->renderer->addToQueue(&titletext);
 		environment->renderer->addToQueue(&closebutton);
 		environment->renderer->addToQueue(&mainpane);
 		environment->renderer->addToQueue(&leftborder);
 		environment->renderer->addToQueue(&rightborder);
 		environment->renderer->addToQueue(&bottomborder);
-		environment->renderer->addToQueue(&titletext);
 
 		visible = true;
 	}
 	else
 	{
 		environment->renderer->removeFromQueue(&boundingbox);
-		environment->renderer->removeFromQueue(&titletext);
 		environment->renderer->removeFromQueue(&titlebar);
+		environment->renderer->removeFromQueue(&titletext);
 		environment->renderer->removeFromQueue(&closebutton);
 		environment->renderer->removeFromQueue(&mainpane);
 		environment->renderer->removeFromQueue(&leftborder);
 		environment->renderer->removeFromQueue(&rightborder);
 		environment->renderer->removeFromQueue(&bottomborder);
-		environment->renderer->removeFromQueue(&titletext);
 
 		visible = false;
 	}

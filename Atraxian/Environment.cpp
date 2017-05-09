@@ -218,9 +218,9 @@ void Environment::main()
 			{
 				if (event.key.code == sf::Keyboard::Key::N) // NEW PANE HOTKEY
 				{
-					parser::loadApp("root//apps//test");
+					MapleParser app("root//apps//test");
 
-					Pane* newpane = new Pane(sf::Vector2f(200, 300), "PaneName", this);
+					Pane* newpane = new Pane(sf::Vector2f(200, 300), app.app_name, this);
 					panes.push_back(newpane);
 					switchFocusedPaneTo(newpane);
 				}

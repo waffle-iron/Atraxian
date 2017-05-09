@@ -1,7 +1,7 @@
 #include "Environment.hpp"
 #include "Renderer.hpp"
 #include "Pane.hpp"
-#include "logger.hpp"
+#include "Logger.hpp"
 
 const float titlebar_height = 32.0f;
 const float border_width = 6.25f;
@@ -36,7 +36,7 @@ void Pane::setPosition(const sf::Vector2f newpos)
 {
 	titlebar.setPosition(newpos);
 
-	//	g j p q y q
+	//	g j p q y
 	if (title.find('p') != std::string::npos)
 		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2));
 	else
@@ -55,7 +55,6 @@ void Pane::setTitle(const std::string title)
 	titletext.setString(title);
 	titletext.setOrigin(titletext.getLocalBounds().width / 2, titletext.getLocalBounds().height / 2);
 
-	//	g j p q y q
 	if (title.find('p') != std::string::npos)
 		titletext.setPosition(titlebar.getPosition().x - (closebutton.getLocalBounds().width / 2), titlebar.getPosition().y - (titletext.getLocalBounds().height / 2));
 	else

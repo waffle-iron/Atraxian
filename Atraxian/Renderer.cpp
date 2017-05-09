@@ -23,7 +23,15 @@ void Renderer::addToQueue(sf::Drawable *object)
 
 void Renderer::removeFromQueue(sf::Drawable *object) // still gives us memory leaks
 {
-	render_queue.erase(std::remove(render_queue.begin(), render_queue.end(), object), render_queue.end());
+	for (size_t i = 0; i < render_queue.size(); i++)
+	{
+		if (object == render_queue[i])
+		{
+			render_queue.erase(std::remove(render_queue.begin(), render_queue.end(), object), render_queue.end());
+
+			break;
+		}
+	}
 }
 
 void Renderer::pushBack(sf::Drawable *object) // still wastes memory.

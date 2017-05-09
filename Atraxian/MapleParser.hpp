@@ -11,11 +11,15 @@ public:
 	~MapleParser();
 
 	std::string app_name;
-	sf::Vector2f pane_dimensions;
+	std::string app_description;
+	sf::Vector2f app_dimensions;
 
 private:
 	bool loadApp(std::string appdir);
-	int getAppInfo(std::string settingsfile);
+	std::string getAppName(std::string settingsfile);
+	std::string getAppDescription(std::string settingsfile);
+	sf::Vector2f getAppDimensions(std::string settingsfile);
+	void createApp();
 };
 
 #endif /* MAPLE_PARSER_HPP */

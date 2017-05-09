@@ -97,7 +97,7 @@ void Environment::main()
 						// if we clicked on any pane
 						for (int i = panes.size() - 1; i >= 0; i--)
 						{
-							if (mouseIsOver(panes[i]->boundingbox, *window)) // check if we're in the pane
+							if (mouseIsOver(panes[i]->boundingbox, *window) && panes[i]->visible) // check if we're in the pane, and it's visible
 							{
 								logger::SILENT("EXTRA-INFO", "Clicked inside the boundingbox of Pane" + std::to_string(panes[i]->PID));
 
@@ -218,11 +218,15 @@ void Environment::main()
 			{
 				if (event.key.code == sf::Keyboard::Key::N) // NEW PANE HOTKEY
 				{
-					MapleParser app("root//apps//test");
+					sf::Clock creation_timer;
 
-					Pane* newpane = new Pane(sf::Vector2f(200, 300), app.app_name, this);
+					logger::BREAK();
+					Pane* newpane = new Pane("root//apps//test", this);
 					panes.push_back(newpane);
 					switchFocusedPaneTo(newpane);
+
+					logger::INFO("Pane creation took " + std::to_string(creation_timer.getElapsedTime().asSeconds()) + " seconds.");
+					logger::BREAK();
 				}
 				else if (focusedPane != nullPane && event.key.code == sf::Keyboard::Key::Delete) // DELETE PANE HOTKEY
 				{

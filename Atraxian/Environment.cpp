@@ -4,8 +4,9 @@
 #include "Renderer.hpp"
 #include "Taskbar.hpp"
 #include "Pane.hpp"
-#include "MapleParser.hpp"
 #include "Util.hpp"
+
+#include <SFBASH\Console.hpp>
 
 #include <ctime>
 
@@ -13,6 +14,8 @@ Environment::Environment(sf::VideoMode dimensions, std::string title, int envID)
 {
 	if (!environment::util::fs_ready())
 		environment::util:: ready_fs();
+
+	console = new Console("Terminal");
 
 	logger::setOutputDir("root", ("environment" + std::to_string(envID)));
 
@@ -28,8 +31,6 @@ Environment::Environment(sf::VideoMode dimensions, std::string title, int envID)
 	nullPane = new Pane(sf::Vector2f(0, 0), "null", 0, window);
 
 	logger::INFO("New Environment instance created.");
-
-	parser::getInfo("root//apps//test.maple");
 }
 
 Environment::~Environment()
@@ -39,6 +40,8 @@ Environment::~Environment()
 	delete window;
 	delete taskbar;
 	delete focusedPane;
+
+	delete console;
 
 	logger::INFO("Environment destroyed.");
 }
@@ -68,6 +71,9 @@ void Environment::main()
 	rm.addToQueue(&taskbar->start_button);
 	rm.addToQueue(&taskbar->div);
 //	rm.addToQueue(&taskbar->time);
+
+	console->create();
+	console->log("test");
 
 	bool dragging_pane(false);
 	

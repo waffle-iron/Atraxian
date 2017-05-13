@@ -1,8 +1,9 @@
 #ifndef ENVIRONMENT_HPP
 #define ENVIRONMENT_HPP
 
-#include <SFML\Graphics\RenderWindow.hpp>
+#include <SFML\Graphics.hpp>
 
+class Console;
 class Taskbar;
 class Pane;
 
@@ -24,6 +25,7 @@ private:
 	std::vector<Pane*> panes;
 	Pane *nullPane;
 	Pane *focusedPane = nullPane;
+	Console *console;
 };
 
 const std::string ENVIRONMENT_VERSION("0.0.642");

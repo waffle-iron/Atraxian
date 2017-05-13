@@ -11,9 +11,6 @@
     <Filter Include="Source Files\Logger">
       <UniqueIdentifier>{00b54a81-ff50-40a6-8b13-a695fefcf83a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Environment\Pane">
-      <UniqueIdentifier>{c245db0d-939b-4bf4-96f7-db9604de609f}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -34,13 +31,10 @@
     <ClCompile Include="Logger.cpp">
       <Filter>Source Files\Logger</Filter>
     </ClCompile>
-    <ClCompile Include="Pane.cpp">
-      <Filter>Source Files\Environment\Pane</Filter>
-    </ClCompile>
-    <ClCompile Include="MapleParser.cpp">
-      <Filter>Source Files\Environment\Pane</Filter>
-    </ClCompile>
     <ClCompile Include="Util.cpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="Pane.cpp">
       <Filter>Source Files\Environment</Filter>
     </ClCompile>
   </ItemGroup>
@@ -60,13 +54,10 @@
     <ClInclude Include="Logger.hpp">
       <Filter>Source Files\Logger</Filter>
     </ClInclude>
-    <ClInclude Include="Pane.hpp">
-      <Filter>Source Files\Environment\Pane</Filter>
-    </ClInclude>
-    <ClInclude Include="MapleParser.hpp">
-      <Filter>Source Files\Environment\Pane</Filter>
-    </ClInclude>
     <ClInclude Include="Util.hpp">
+      <Filter>Source Files\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="Pane.hpp">
       <Filter>Source Files\Environment</Filter>
     </ClInclude>
   </ItemGroup>

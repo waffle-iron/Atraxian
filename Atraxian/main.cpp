@@ -2,6 +2,7 @@
 #include "Logger.hpp"
 
 #include <SFML\Graphics\RenderWindow.hpp>
+#include <SFBASH\Console.hpp>
 
 #include <iostream>
 #include <thread>
@@ -13,13 +14,22 @@ void new_Env(int envID)
 	delete atraxian;
 }
 
+void new_Con(int conID)
+{
+	Console *console = new Console("Terminal");
+	console->create();
+	delete console;
+}
+
 int main()
 {
 	logger::INFO("Initlializing Atraxian " + ENVIRONMENT_VERSION + "...");
 	logger::BREAK();
 
-	std::thread one(new_Env, 1);
-	one.join();
+	std::thread one_env(new_Env, 1);
+//	std::thread one_con(new_Con, 1);
+	one_env.join();
+//	one_con.join();
 
 	logger::INFO("Exiting...");
 	return 0;

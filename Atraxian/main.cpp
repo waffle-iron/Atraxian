@@ -2,7 +2,7 @@
 #include "Logger.hpp"
 
 #include <SFML\Graphics\RenderWindow.hpp>
-#include <SFBASH\Console.hpp>
+#include <SFCONSOLE\Console.hpp>
 
 #include <iostream>
 #include <thread>
@@ -27,9 +27,10 @@ int main()
 	logger::BREAK();
 
 	std::thread one_env(new_Env, 1);
-//	std::thread one_con(new_Con, 1);
+	std::thread one_con(new_Con, 1);
+
 	one_env.join();
-//	one_con.join();
+	one_con.join();
 
 	logger::INFO("Exiting...");
 	return 0;

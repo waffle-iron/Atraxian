@@ -6,7 +6,7 @@
 #include "Pane.hpp"
 #include "Util.hpp"
 
-#include <SFBASH\Console.hpp>
+#include <SFCONSOLE\Console.hpp>
 
 #include <ctime>
 
@@ -15,7 +15,7 @@ Environment::Environment(sf::VideoMode dimensions, std::string title, int envID)
 	if (!environment::util::fs_ready())
 		environment::util:: ready_fs();
 
-	console = new Console("Terminal");
+//	console = new Console("Terminal");
 
 	logger::setOutputDir("root", ("environment" + std::to_string(envID)));
 
@@ -41,7 +41,7 @@ Environment::~Environment()
 	delete taskbar;
 	delete focusedPane;
 
-	delete console;
+//	delete console;
 
 	logger::INFO("Environment destroyed.");
 }
@@ -72,8 +72,8 @@ void Environment::main()
 	rm.addToQueue(&taskbar->div);
 //	rm.addToQueue(&taskbar->time);
 
-	console->create();
-	console->log("test");
+//	console->create();
+//	console->log("test");
 
 	bool dragging_pane(false);
 	
@@ -266,7 +266,7 @@ void Environment::main()
 
 		{
 			// if we are holding the left alt key and space at the same time, and there is at least one pane, center it.
-			if (!panes.empty() && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LAlt) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LAlt) && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space) && focusedPane != nullPane)
 			{
 				focusedPane->setPosition(sf::Vector2f(window->getView().getCenter()));
 

@@ -1,13 +1,14 @@
 #include "Environment.hpp"
+#include "Taskbar.hpp"
 #include "Pane.hpp"
 #include "logger.hpp"
 
 const float titlebar_height = 32.0f;
 const float border_width = 6.25f;
 
-Pane::Pane(const sf::Vector2f size, const std::string title, const int pid, sf::RenderWindow *window_)
+Pane::Pane(const sf::Vector2f size, const std::string title, const int pid, Environment *environment_)
 {
-	window = window_;
+	environment = environment_;
 	PID = pid;
 
 	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
@@ -16,7 +17,7 @@ Pane::Pane(const sf::Vector2f size, const std::string title, const int pid, sf::
 
 	setSize(size);
 
-	setPosition(window->getView().getCenter());
+	setPosition(environment->window->getView().getCenter());
 	
 	logger::INFO("Pane" + std::to_string(pid) + " created");
 }
@@ -78,6 +79,16 @@ void Pane::defocus()
 	bottomborder.setFillColor(sf::Color(defocusedColour));
 	
 	logger::INFO("Defocused Pane" + std::to_string(PID) + ".");
+}
+
+void Pane::addToTaskbar()
+{
+	environment->taskbar->addToTaskbar(this);
+}
+
+void Pane::removeFromTaskbar()
+{
+	environment->taskbar->removeFromTaskbar(this);
 }
 
 // PRIVATE

@@ -5,6 +5,7 @@
 
 class Taskbar;
 class Pane;
+class Renderer;
 
 class Environment
 {
@@ -16,6 +17,7 @@ public:
 
 	sf::RenderWindow *window;
 	Taskbar *taskbar;
+	Renderer *renderman;
 
 	void main();
 	void switchFocusedPaneTo(Pane* pane);

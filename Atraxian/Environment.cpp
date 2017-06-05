@@ -4,7 +4,6 @@
 #include "Renderer.hpp"
 #include "Taskbar.hpp"
 #include "Pane.hpp"
-#include "MapleParser.hpp"
 #include "Util.hpp"
 
 #include <ctime>
@@ -23,13 +22,13 @@ Environment::Environment(sf::VideoMode dimensions, std::string title, int envID)
 	window->create(dimensions, (title + " (" + std::to_string(envID) + ")"), (sf::Style::Close | sf::Style::Titlebar));
 	window->setFramerateLimit(60);
 
+	renderman = new Renderer(window);
+
 	taskbar = new Taskbar(this);
 
-	nullPane = new Pane(sf::Vector2f(0, 0), "null", 0, window);
+	nullPane = new Pane(sf::Vector2f(0, 0), "null", 0, this);
 
 	logger::INFO("New Environment instance created.");
-
-	parser::getInfo("root//apps//test.maple");
 }
 
 Environment::~Environment()
@@ -38,6 +37,7 @@ Environment::~Environment()
 
 	delete window;
 	delete taskbar;
+	delete renderman;
 	delete focusedPane;
 
 	logger::INFO("Environment destroyed.");
@@ -62,12 +62,10 @@ void Environment::switchFocusedPaneTo(Pane* pane)
 
 void Environment::main()
 {
-	Renderer rm(this->window);
-
-	rm.addToQueue(&taskbar->bar);
-	rm.addToQueue(&taskbar->start_button);
-	rm.addToQueue(&taskbar->div);
-//	rm.addToQueue(&taskbar->time);
+	renderman->addToQueue(&taskbar->bar);
+	renderman->addToQueue(&taskbar->start_button);
+	renderman->addToQueue(&taskbar->div);
+	renderman->addToQueue(&taskbar->time);
 
 	bool dragging_pane(false);
 	
@@ -79,7 +77,7 @@ void Environment::main()
 			if (event.type == sf::Event::EventType::Closed)
 			{
 				panes.clear();
-				rm.clearQueue();
+				renderman->clearQueue();
 				window->close();
 				return;
 			}
@@ -94,7 +92,7 @@ void Environment::main()
 						bool already_selected(false);
 
 						// if we clicked on any pane
-						for (int i = panes.size() - 1; i >= 0; i--)
+						for (int i = panes.size() - 1; i >= 0; i--) // this doesn't work, i don't know how to fix it.
 						{
 							if (mouseIsOver(panes[i]->boundingbox, *window)) // check if we're in the pane
 							{
@@ -108,13 +106,13 @@ void Environment::main()
 									{
 										logger::INFO("Clicked the close button of Pane" + std::to_string(panes[i]->PID));
 
-										rm.removeFromQueue(&panes[i]->titletext);
-										rm.removeFromQueue(&panes[i]->titlebar);
-										rm.removeFromQueue(&panes[i]->mainpane);
-										rm.removeFromQueue(&panes[i]->closebutton);
-										rm.removeFromQueue(&panes[i]->leftborder);
-										rm.removeFromQueue(&panes[i]->rightborder);
-										rm.removeFromQueue(&panes[i]->bottomborder);
+										renderman->removeFromQueue(&panes[i]->titletext);
+										renderman->removeFromQueue(&panes[i]->titlebar);
+										renderman->removeFromQueue(&panes[i]->mainpane);
+										renderman->removeFromQueue(&panes[i]->closebutton);
+										renderman->removeFromQueue(&panes[i]->leftborder);
+										renderman->removeFromQueue(&panes[i]->rightborder);
+										renderman->removeFromQueue(&panes[i]->bottomborder);
 
 										delete panes[i];
 										panes.erase(std::remove(panes.begin(), panes.end(), panes[i]), panes.end());
@@ -142,14 +140,14 @@ void Environment::main()
 									selected = true;
 
 									logger::INFO("Bringing Pane" + std::to_string(focusedPane->PID) + " to the top of the Render Queue.");
-									rm.pushBack(&focusedPane->titletext);
-									rm.pushBack(&focusedPane->titlebar);
-									rm.pushBack(&focusedPane->closebutton);
-									rm.pushBack(&focusedPane->mainpane);
-									rm.pushBack(&focusedPane->leftborder);
-									rm.pushBack(&focusedPane->rightborder);
-									rm.pushBack(&focusedPane->bottomborder);
-									rm.pushBack(&focusedPane->titletext);
+									renderman->pushBack(&focusedPane->titletext);
+									renderman->pushBack(&focusedPane->titlebar);
+									renderman->pushBack(&focusedPane->closebutton);
+									renderman->pushBack(&focusedPane->mainpane);
+									renderman->pushBack(&focusedPane->leftborder);
+									renderman->pushBack(&focusedPane->rightborder);
+									renderman->pushBack(&focusedPane->bottomborder);
+									renderman->pushBack(&focusedPane->titletext);
 								}
 
 								break;
@@ -226,30 +224,30 @@ void Environment::main()
 				if (event.key.code == sf::Keyboard::Key::N) // NEW PANE HOTKEY
 				{
 					const int PID = panes.size() + 1;
-					Pane* newpane = new Pane(sf::Vector2f(200, 300), "Pane" + std::to_string(PID), PID, window);
+					Pane* newpane = new Pane(sf::Vector2f(200, 300), "Pane" + std::to_string(PID), PID, this);
 
-//					rm.addToQueue(&newpane->boundingbox);
-					rm.addToQueue(&newpane->titletext);
-					rm.addToQueue(&newpane->titlebar);
-					rm.addToQueue(&newpane->closebutton);
-					rm.addToQueue(&newpane->mainpane);
-					rm.addToQueue(&newpane->leftborder);
-					rm.addToQueue(&newpane->rightborder);
-					rm.addToQueue(&newpane->bottomborder);
-					rm.addToQueue(&newpane->titletext);
+//					renderman->addToQueue(&newpane->boundingbox);
+					renderman->addToQueue(&newpane->titletext);
+					renderman->addToQueue(&newpane->titlebar);
+					renderman->addToQueue(&newpane->closebutton);
+					renderman->addToQueue(&newpane->mainpane);
+					renderman->addToQueue(&newpane->leftborder);
+					renderman->addToQueue(&newpane->rightborder);
+					renderman->addToQueue(&newpane->bottomborder);
+					renderman->addToQueue(&newpane->titletext);
 					panes.push_back(newpane); // add it to the stack
 
 					switchFocusedPaneTo(newpane);
 				}
 				else if (focusedPane != nullPane && event.key.code == sf::Keyboard::Key::Delete) // DELETE PANE HOTKEY
 				{
-					rm.removeFromQueue(&focusedPane->titletext);
-					rm.removeFromQueue(&focusedPane->titlebar);
-					rm.removeFromQueue(&focusedPane->mainpane);
-					rm.removeFromQueue(&focusedPane->closebutton);
-					rm.removeFromQueue(&focusedPane->leftborder);
-					rm.removeFromQueue(&focusedPane->rightborder);
-					rm.removeFromQueue(&focusedPane->bottomborder);
+					renderman->removeFromQueue(&focusedPane->titletext);
+					renderman->removeFromQueue(&focusedPane->titlebar);
+					renderman->removeFromQueue(&focusedPane->mainpane);
+					renderman->removeFromQueue(&focusedPane->closebutton);
+					renderman->removeFromQueue(&focusedPane->leftborder);
+					renderman->removeFromQueue(&focusedPane->rightborder);
+					renderman->removeFromQueue(&focusedPane->bottomborder);
 
 					delete focusedPane;
 					panes.erase(std::remove(panes.begin(), panes.end(), focusedPane), panes.end()); // remove it from the stack
@@ -277,12 +275,12 @@ void Environment::main()
 			}
 		}
 
-//		taskbar->time.setString(environment::getTimestamp());
-//		taskbar->time.setOrigin(sf::Vector2f(taskbar->time.getLocalBounds().width / 2, taskbar->time.getLocalBounds().height / 2));
-//		taskbar->time.setPosition(sf::Vector2f((taskbar->bar.getPosition().x * 2) - (taskbar->time.getLocalBounds().width / 1.7), taskbar->bar.getPosition().y - (taskbar->time.getLocalBounds().height / 2.5)));
+		taskbar->time.setString(environment::util::getTimestamp());
+		taskbar->time.setOrigin(sf::Vector2f(taskbar->time.getLocalBounds().width / 2, taskbar->time.getLocalBounds().height / 2));
+		taskbar->time.setPosition(sf::Vector2f((taskbar->bar.getPosition().x * 2) - (taskbar->time.getLocalBounds().width / 1.7), taskbar->bar.getPosition().y - (taskbar->time.getLocalBounds().height / 2.5)));
 
 		window->clear(sf::Color::Blue);
-		rm.render();
+		renderman->render();
 		window->display();
 	}
 }

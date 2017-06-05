@@ -2,13 +2,16 @@
 #include "logger.hpp"
 
 #include "Environment.hpp"
+#include "Renderer.hpp"
 
-Taskbar::Taskbar(Environment *environment)
+Taskbar::Taskbar(Environment *environment_)
 {
+	environment = environment_;
+
 	bar.setFillColor(sf::Color::White); // TODO: USERF:CUSTOMISE
-	bar.setSize(sf::Vector2f(environment->window->getSize().x, 40.0f)); // as long as the window, and 40 pixels high
+	bar.setSize(sf::Vector2f(environment_->window->getSize().x, 40.0f)); // as long as the window, and 40 pixels high
 	bar.setOrigin(bar.getSize().x / 2.0f, bar.getSize().y / 2.0f); // center it
-	bar.setPosition(environment->window->getSize().x / 2.0f, (environment->window->getSize().y - (bar.getLocalBounds().height / 2.0f)));
+	bar.setPosition(environment_->window->getSize().x / 2.0f, (environment_->window->getSize().y - (bar.getLocalBounds().height / 2.0f)));
 
 	start_button.setFillColor(sf::Color::Red);
 	start_button.setSize(sf::Vector2f(40, 40));
@@ -19,10 +22,15 @@ Taskbar::Taskbar(Environment *environment)
 	div.setPosition(start_button.getPosition().x + start_button.getLocalBounds().width / 2 + div.getLocalBounds().width, bar.getPosition().y - div.getLocalBounds().height / 2);
 	div.setFillColor(sf::Color::Black);
 
-//	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
-//	time.setCharacterSize(bar.getLocalBounds().height - 16.0f);
-//	time.setFillColor(sf::Color::Black);
-//	time.setFont(font);
+	font.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf");
+	time.setCharacterSize(bar.getLocalBounds().height - 16.0f);
+	time.setFillColor(sf::Color::Black);
+	time.setFont(font);
+
+	environment->renderman->addToQueue(&bar);
+	environment->renderman->addToQueue(&start_button);
+	environment->renderman->addToQueue(&div);
+	environment->renderman->addToQueue(&time);
 
 	logger::INFO("New taskbar created.");
 }
@@ -42,4 +50,21 @@ void Taskbar::close_start_menu()
 {
 	is_start_open = false;
 	start_button.setFillColor(sf::Color::Red);
+}
+
+void Taskbar::addToTaskbar(Pane* pane)
+{
+	taskbarItems.push_back(pane);
+}
+
+void Taskbar::removeFromTaskbar(Pane* pane)
+{
+	for (size_t i = 0; i < taskbarItems.size(); i++)
+		if (pane == taskbarItems[i])
+			delete taskbarItems[i];
+}
+
+void Taskbar::Update()
+{
+
 }

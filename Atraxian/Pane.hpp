@@ -6,7 +6,7 @@
 class Pane
 {
 public:
-	Pane(const sf::Vector2f size, const std::string title, const int pid, sf::RenderWindow *window);
+	Pane(const sf::Vector2f size, const std::string title, const int pid, Environment *environment_);
 	virtual ~Pane();
 
 	sf::RectangleShape mainpane;
@@ -28,10 +28,12 @@ public:
 	void resize(const sf::Vector2f newsize);
 	void focus();
 	void defocus();
+	void addToTaskbar();
+	void removeFromTaskbar();
 
 private:
-	sf::RenderWindow *window;
 	sf::Font font;
+	Environment *environment;
 	
 	void setSize(const sf::Vector2f size);
 };

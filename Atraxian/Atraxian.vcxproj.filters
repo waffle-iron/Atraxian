@@ -37,9 +37,6 @@
     <ClCompile Include="Pane.cpp">
       <Filter>Source Files\Environment\Pane</Filter>
     </ClCompile>
-    <ClCompile Include="MapleParser.cpp">
-      <Filter>Source Files\Environment\Pane</Filter>
-    </ClCompile>
     <ClCompile Include="Util.cpp">
       <Filter>Source Files\Environment</Filter>
     </ClCompile>
@@ -61,9 +58,6 @@
       <Filter>Source Files\Logger</Filter>
     </ClInclude>
     <ClInclude Include="Pane.hpp">
-      <Filter>Source Files\Environment\Pane</Filter>
-    </ClInclude>
-    <ClInclude Include="MapleParser.hpp">
       <Filter>Source Files\Environment\Pane</Filter>
     </ClInclude>
     <ClInclude Include="Util.hpp">

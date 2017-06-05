@@ -138,7 +138,6 @@
     <ClCompile Include="Filesystem.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MapleParser.cpp" />
     <ClCompile Include="Pane.cpp" />
     <ClCompile Include="Renderer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
@@ -150,7 +149,6 @@
     <ClInclude Include="Environment.hpp" />
     <ClInclude Include="Filesystem.hpp" />
     <ClInclude Include="Logger.hpp" />
-    <ClInclude Include="MapleParser.hpp" />
     <ClInclude Include="Pane.hpp" />
     <ClInclude Include="Renderer.hpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
